@@ -1,13 +1,19 @@
-from fastapi import FastAPI
+from flask import Flask
+from flask import render_template
 
-app = FastAPI()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app = Flask(__name__)
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.route('/')
+def hello_world():  # put application's code here
+    return 'Hello World!'
+
+
+@app.route('/tax-direction/')
+@app.route('/tax-direction/<name>')
+def tax_direction(name=None):
+    return render_template('tax-form.html', name=name)
+
+
+if __name__ == '__main__':
+    app.run()
