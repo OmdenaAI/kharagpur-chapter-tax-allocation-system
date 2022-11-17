@@ -1,0 +1,36 @@
+{% extends "main.html" %}
+{% block content %}
+<form action = "http://localhost:5000/tax-direction" method = "POST">
+    <div class="form-group">
+        <input type="checkbox" id="consentBox" name="consent" value="True">
+        <label for="consentBox">Would you like to suggest to your government how to use the above calculated amount for solving the problem specific to you?</label>
+    </div>
+    <br>
+    <div>
+      Specific Domains which you wish to focus on :
+    </div>
+    <div class="form-group">
+        <input type="number" class="form-control" id="percentageTax" name="percent" placeholder="%">
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" id="domain" name="domainText" placeholder="Broad Domain">
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" id="problemStatement" name="problemText" placeholder="Problem Statement">
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" id="location" name="locationText" placeholder="Location or Beneficiary area">
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" id="suggestion" name="suggestionText" placeholder="Solution Suggestion">
+    </div>
+
+    <div> Map </div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+{% endblock %}

@@ -127,3 +127,43 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# exculding Idea folder
+.idea/
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode
+*.code-workspace
+.vscode/*
+
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+
+# Netbeans
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+#JetBrains
+out/
+
+# Editor-based Rest Client
+.idea/httpRequests
