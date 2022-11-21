@@ -55,13 +55,14 @@
 
         <b>Address Lookup</b>
         <div id="search">
-            <input type="text" name="addr" value="" id="addr" size="58" />
-<!--            <button type="button" onclick="addr_search();">Search</button>-->
-            <div id="results"></div>
+                <input type="text" name="addr" value="" id="addr" size="58" />
+                <button type="button" onclick="addr_search();">Search</button>
+                <div id="results"></div>
+
         </div>
         <br />
     </div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary" formaction="/tax-direction">Submit</button>
 
 </form>
 
@@ -238,7 +239,7 @@
                 "Sorry, no results...";
         }
     }
-
+    document.getElementById("addr").onchange = function() {addr_search()};
     function addr_search() {
         var inp = document.getElementById("addr");
         var xmlhttp = new XMLHttpRequest();
