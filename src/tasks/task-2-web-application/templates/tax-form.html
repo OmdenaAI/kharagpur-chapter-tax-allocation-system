@@ -99,7 +99,7 @@
         .on("dragend", function () {
             // OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
             var jsonQuery =
-                "http://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+                "http://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
                 myMarker.getLatLng().lat +
                 "&lon=" +
                 myMarker.getLatLng().lng +
@@ -108,59 +108,39 @@
                 console.log(result_data);
 
                 var road;
-
-                if (result_data.address.road) {
-                    road = result_data.address.road;
-                } else if (result_data.address.pedestrian) {
-                    road = result_data.address.pedestrian;
+                if (result_data.error) {
+                    myMarker.bindPopup("Try another place").openPopup();
                 } else {
-                    road = "Not defined!";
+                    if (result_data.address.road) {
+                        road = result_data.address.road;
+                    } else if (result_data.address.pedestrian) {
+                        road = result_data.address.pedestrian;
+                    } else {
+                        road = "Not defined!";
+                    }
+                    var popup_text = "<b>Lat-lng:</b> " + myMarker.getLatLng().lat + ", " +  myMarker.getLatLng().lng + "</br><b>road</b> " + road + ", " +
+                        result_data.address.house_number + "</br><b>District</b> " + result_data.address.city_district + "</br><b>City:</b> " + result_data.address.city +
+                        "</br><b>postal:</b> " + result_data.address.postcode;
+                    new_addr = road + ", " + result_data.address.house_number + ", " + result_data.address.city_district + ", " + result_data.address.city + ", " + result_data.address.postcode;
+                    var lat = myMarker.getLatLng().lat;
+                    var lon = myMarker.getLatLng().lng;
+                    var czoom = map.getZoom();
+                    if (czoom < 18) {
+                        nzoom = czoom + 2;
+                    }
+                    if (nzoom > 18) {
+                        nzoom = 18;
+                    }
+                    if (czoom != 18) {
+                        map.setView([lat, lon], nzoom);
+                    } else {
+                        map.setView([lat, lon]);
+                    }
+                    document.getElementById("lat").value = lat;
+                    document.getElementById("lon").value = lon;
+                    document.getElementById("addr").value = new_addr;
+                    myMarker.bindPopup(popup_text).openPopup();
                 }
-                var popup_text =
-                    "<b>Lat-lng:</b> " +
-                    myMarker.getLatLng().lat +
-                    ", " +
-                    myMarker.getLatLng().lng +
-                    // "</br><b>Address:</b> " + result_data.address +
-
-                    "</br><b>road</b> " +
-                    road +
-                    ", " +
-                    result_data.address.house_number +
-                    "</br><b>District</b> " +
-                    result_data.address.city_district +
-                    "</br><b>City:</b> " +
-                    result_data.address.city +
-                    "</br><b>postal:</b> " +
-                    result_data.address.postcode;
-                new_addr =
-                    road +
-                    ", " +
-                    result_data.address.house_number +
-                    ", " +
-                    result_data.address.city_district +
-                    ", " +
-                    result_data.address.city +
-                    ", " +
-                    result_data.address.postcode;
-                var lat = myMarker.getLatLng().lat;
-                var lon = myMarker.getLatLng().lng;
-                var czoom = map.getZoom();
-                if (czoom < 18) {
-                    nzoom = czoom + 2;
-                }
-                if (nzoom > 18) {
-                    nzoom = 18;
-                }
-                if (czoom != 18) {
-                    map.setView([lat, lon], nzoom);
-                } else {
-                    map.setView([lat, lon]);
-                }
-                document.getElementById("lat").value = lat;
-                document.getElementById("lon").value = lon;
-                document.getElementById("addr").value = new_addr;
-                myMarker.bindPopup(popup_text).openPopup();
             });
         });
 
@@ -189,23 +169,22 @@
             } else {
                 road = "Not defined!";
             }
-            var popup_text =
-                "<b>Lat-lng:</b> " +
+            var popup_text = "</br><b>Address:</b> " + result_data.display_name ;
+
+            if (result_data.address.city_district) {
+                popup_text = popup_text + "</br><b>District:</b> " + result_data.address.city_district
+            }
+            if (result_data.address.city) {
+                popup_text = popup_text + "</br><b>City:</b> " + result_data.address.city
+            }
+            popup_text = popup_text +
+                "</br><b>State:</b> " +
+                result_data.address.state +
+                "</br><b>Country:</b> " +
+                result_data.address.country + "</br><b>Lat-lng:</b> " +
                 myMarker.getLatLng().lat +
                 ", " +
-                myMarker.getLatLng().lng +
-                // "</br><b>Address:</b> " + result_data.address +
-
-                "</br><b>road</b> " +
-                road +
-                ", " +
-                result_data.address.house_number +
-                "</br><b>District</b> " +
-                result_data.address.city_district +
-                "</br><b>City:</b> " +
-                result_data.address.city +
-                "</br><b>postal:</b> " +
-                result_data.address.postcode;
+                myMarker.getLatLng().lng;
             //  myMarker.closePopup();
             //  map.setView([lat1, lng1],18);
             //  myMarker.setLatLng([lat1, lng1]);
@@ -213,6 +192,7 @@
             //  lon = lng1.toFixed(8);
             document.getElementById("lat").value = lat;
             document.getElementById("lon").value = lon;
+            document.getElementById("addr").value = result_data.display_name;
             myMarker.bindPopup(popup_text).openPopup();
             //  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
         });
