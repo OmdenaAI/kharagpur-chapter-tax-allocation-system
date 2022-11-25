@@ -71,8 +71,9 @@ def tax_direction(name=None):
                     print("Added")
                     # return "added"
                 else:
-                    data_frame.to_csv(r'./static/data.csv', index=False)
+                    # data_frame.to_csv(r'./static/data.csv', index=False)
                     # return "updated"
+                    result = "Given email has already entered form details!"
         return render_template("results.html", result=result)
 
 
