@@ -16,11 +16,6 @@
         <label for="consentBox">Would you like to suggest to your government how to use the above calculated amount for solving the problem specific to you?</label>
     </div>
 
-    Add random generator for tax amount generator and add the price value.
-    Take a unique identifier like email ID
-
-    auto email of responses
-
     <div class="form-group">
         <input type="text" class="form-control" id="email" name="email" placeholder="Email">
     </div>
@@ -29,7 +24,7 @@
       Specific Domains which you wish to focus on :
     </div>
     <div class="form-group">
-        <input type="number" class="form-control" id="percentageTax" name="percent" placeholder="%">
+        <input type="number" class="form-control" id="percentageTax" name="percent" value="50" placeholder="%">
     </div>
 
     <div class="form-group">
@@ -64,6 +59,7 @@
         </div>
         <br />
     </div>
+
 	<button type="submit" class="btn btn-primary" formaction="/tax-direction">Submit</button>
 
 </form>
