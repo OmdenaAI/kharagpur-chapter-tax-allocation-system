@@ -17,7 +17,7 @@ def main():
 def tax_direction(name=None):
     if request.method == 'POST':
         result = request.form
-        json_result = dict(result)
+        json_result = result.to_dict(flat=False)
         print(json_result)
 
         # save in csv file
@@ -28,20 +28,19 @@ def tax_direction(name=None):
         print("###")
         print(data_frame)
         # we can add code to check data before saving
-
+        input = {"consent": json_result["consent"],
+                 "email": json_result["email"],
+                 "percent": [json_result["percent"]],
+                 "domain": [json_result["domainText"]],
+                 "problem": [json_result["problemText"]],
+                 "location": [json_result["locationText"]],
+                 "suggestion": [json_result["suggestionText"]],
+                 "lat": [json_result["lat"]],
+                 "long": [json_result["lon"]],
+                 "addr": json_result["addr"]
+                 }
+        new_data_frame = pd.DataFrame.from_dict(input, orient='columns')
         if data_frame.empty:
-            new_data_frame = pd.DataFrame({"consent": json_result["consent"],
-                                           "email": json_result["email"],
-                                           "percent": [json_result["percent"]],
-                                           "domain": json_result["domainText"],
-                                           "problem": json_result["problemText"],
-                                           "location": json_result["locationText"],
-                                           "suggestion": json_result["suggestionText"],
-                                           "lat": [json_result["lat"]],
-                                           "long": [json_result["lon"]],
-                                           "addr": json_result["addr"]
-                                           })
-
             final_data_frame = data_frame.append(new_data_frame)
             final_data_frame.to_csv(r'./static/data.csv', index=False)
             print("Added")
@@ -54,18 +53,6 @@ def tax_direction(name=None):
                     exists = True  # Creating the Second Dataframe using dictionary
 
                 if not exists:
-                    new_data_frame = pd.DataFrame({"consent": json_result["consent"],
-                                                   "email": json_result["email"],
-                                                   "percent": [json_result["percent"]],
-                                                   "domain": json_result["domainText"],
-                                                   "problem": json_result["problemText"],
-                                                   "location": json_result["locationText"],
-                                                   "suggestion": json_result["suggestionText"],
-                                                   "lat": [json_result["lat"]],
-                                                   "long": [json_result["lon"]],
-                                                   "addr": json_result["addr"]
-                                                   })
-
                     final_data_frame = data_frame.append(new_data_frame)
                     final_data_frame.to_csv(r'./static/data.csv', index=False)
                     print("Added")
@@ -74,7 +61,7 @@ def tax_direction(name=None):
                     # data_frame.to_csv(r'./static/data.csv', index=False)
                     # return "updated"
                     result = "Given email has already entered form details!"
-        return render_template("results.html", result=result)
+        return render_template("results.html", result=json_result)
 
 
 if __name__ == '__main__':

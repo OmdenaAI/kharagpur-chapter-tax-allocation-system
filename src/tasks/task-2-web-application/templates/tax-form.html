@@ -5,18 +5,12 @@
 	crossorigin=""
 ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link
 	rel="stylesheet"
 	href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
 	integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
 	crossorigin=""
 />
-<link
-			rel="stylesheet"
-			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-		/>
 <style type="text/css">
 	html,
 	body {
@@ -36,7 +30,7 @@
 	}
 	#map {
 		width: 100%;
-		height: 50%;
+		height: 300px;
 		padding: 100px;
 		margin: 0;
 	}
@@ -48,7 +42,7 @@
 		text-decoration: underline;
 	}
 </style>
-<form action="/tax-direction" method="POST">
+<form id="tax-form" action="/tax-direction" method="POST">
 	<div class="form-group">
 		<input type="checkbox" id="consentBox" name="consent" value="True" />
 		<label for="consentBox"
@@ -69,10 +63,6 @@
 	<br />
 	<div>Specific Domains which you wish to focus on :</div>
 	<div class="form-group">
-		<form name="add_skills" id="add_skills">
-			<div id="InputsWrapper">
-				<div class="row">
-					<div class="col-xs-6">
 		<input
 			type="number"
 			class="form-control"
@@ -81,43 +71,19 @@
 			value="50"
 			placeholder="%"
 		/>
-		<input
-			type="text"
-			class="form-control"
-			id="domain"
-			name="domainText"
-			placeholder="Broad Domain"
-		/>
-					</div>
-				</div>
-			</div>
-		</form>
 	</div>
-	
-
-	 <!-- <div class="form-group">
-		<form name="add_skills" id="add_skills">
-			<div id="InputsWrapper">
-				<div class="row">
-					<div class="col-xs-6">
-		<input
-			type="text"
-			class="form-control"
-			id="domain"
-			name="domainText"
-			placeholder="Broad Domain"
-		/>
-	</div>
-</div>
-</div>
-</form>
-	</div> -->
 
 	<div class="form-group">
-		<form name="add_skills" id="add_skills">
-			<div id="InputsWrapper">
-				<div class="row">
-					<div class="col-xs-6">
+		<input
+			type="text"
+			class="form-control"
+			id="domain"
+			name="domainText"
+			placeholder="Broad Domain"
+		/>
+	</div>
+
+	<div class="form-group">
 		<input
 			type="text"
 			class="form-control"
@@ -126,16 +92,8 @@
 			placeholder="Problem Statement"
 		/>
 	</div>
-</div>
-</div>
-</form>
-	</div>
 
 	<div class="form-group">
-		<form name="add_skills" id="add_skills">
-			<div id="InputsWrapper">
-				<div class="row">
-					<div class="col-xs-6">
 		<input
 			type="text"
 			class="form-control"
@@ -144,16 +102,8 @@
 			placeholder="Location or Beneficiary area"
 		/>
 	</div>
-</div>
-</div>
-</form>
-	</div>
 
 	<div class="form-group">
-		<form name="add_skills" id="add_skills">
-			<div id="InputsWrapper">
-				<div class="row">
-					<div class="col-xs-6">
 		<input
 			type="text"
 			class="form-control"
@@ -161,10 +111,6 @@
 			name="suggestionText"
 			placeholder="Solution Suggestion"
 		/>
-	</div>
-</div>
-</div>
-</form>
 	</div>
 
 	<div class="map-container">
@@ -180,17 +126,18 @@
 			<div id="results"></div>
 		</div>
 		<br />
-		<div class="col-xs-6">
-			<button
-				type="button"
-				name="add"
-				id="AddMoreFileBox"
-				class="btn btn-success"
-			>
-				Add More
-			</button>
-		</div>
-		<div id="InputsWrapper"></div>
+
+	</div>
+	<div class="form-group" id="InputsWrapper"></div>
+	<div class="form-group">
+		<button
+			type="button"
+			name="add"
+			id="AddMoreFileBox"
+			class="btn btn-success"
+		>
+			Add More
+		</button>
 	</div>
 
 	<button type="submit" class="btn btn-primary" formaction="/tax-direction">
@@ -205,23 +152,20 @@
 
 	var options = {
 		center: [startlat, startlon],
-		zoom: 9,
+		zoom: 5,
 	};
 
 	document.getElementById("lat").value = startlat;
 	document.getElementById("lon").value = startlon;
 
-	var map = L.map("map", options).fitWorld();
+	var map = L.map("map", options);
 	var nzoom = 12;
 
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
 		attribution: "OSM",
 	}).addTo(map);
 
-	L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-		attribution:
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	}).addTo(map);
+
 
 	console.log(L);
 
@@ -253,31 +197,54 @@
 					} else {
 						road = "Not defined!";
 					}
-					var popup_text =
-						"<b>Lat-lng:</b> " +
+					var popup_text = "</br><b>Address:</b> " + result_data.display_name;
+
+					if (result_data.address.city_district) {
+						popup_text =
+							popup_text +
+							"</br><b>District:</b> " +
+							result_data.address.city_district;
+					}
+					if (result_data.address.city) {
+						popup_text =
+							popup_text +
+							"</br><b>City:</b> " +
+							result_data.address.city;
+					}
+					if (result_data.address.state_district) {
+						popup_text =
+							popup_text +
+							"</br><b>State District:</b> " +
+							result_data.address.state_district;
+					}
+					if (result_data.address.state) {
+						popup_text =
+							popup_text +
+							"</br><b>State:</b> " +
+							result_data.address.state;
+					}
+					if (result_data.address.country) {
+						popup_text =
+							popup_text +
+							"</br><b>Country:</b> " +
+							result_data.address.country;
+					}
+
+					if (road != "Not defined!") {
+						popup_text = popup_text + "</br><b>Road:</b> " + road +
+						", "
+					}
+					if (result_data.address.postcode) {
+						popup_text =
+								popup_text +
+								"</br><b>Postal:</b> " +
+								result_data.address.postcode;
+					}
+					popup_text = popup_text+"</br><b>Lat-lng:</b> " +
 						myMarker.getLatLng().lat +
 						", " +
-						myMarker.getLatLng().lng +
-						"</br><b>road</b> " +
-						road +
-						", " +
-						result_data.address.house_number +
-						"</br><b>District</b> " +
-						result_data.address.city_district +
-						"</br><b>City:</b> " +
-						result_data.address.city +
-						"</br><b>postal:</b> " +
-						result_data.address.postcode;
-					new_addr =
-						road +
-						", " +
-						result_data.address.house_number +
-						", " +
-						result_data.address.city_district +
-						", " +
-						result_data.address.city +
-						", " +
-						result_data.address.postcode;
+						myMarker.getLatLng().lng
+					new_addr = result_data.display_name;
 					var lat = myMarker.getLatLng().lat;
 					var lon = myMarker.getLatLng().lng;
 					var czoom = map.getZoom();
@@ -359,7 +326,9 @@
 			document.getElementById("addr").value = result_data.display_name;
 			myMarker.bindPopup(popup_text).openPopup();
 			//  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+			console.log(popup_text);
 		});
+
 	}
 
 	function myFunction(arr) {
@@ -404,68 +373,73 @@
 	   $(document).ready(function () {
 		var MaxInputs = 8;
 		var InputsWrapper = $("#InputsWrapper"); //Input boxes wrapper ID
-		var AddButton = $("#AddMoreFileBox");
+		var percentageTax = $("#percentageTax");
 
-		var x = InputsWrapper.length; //initlal text box count
-		var FieldCount = 1; //to keep track of text box added
+		var x=0;
+		var FieldCount = 0; //to keep track of text box added
 
-		$(AddButton).click(function (e) {
+		$("#AddMoreFileBox").click(function (e) {
+			if(x==0) {
+				x = parseInt(percentageTax.val());
+			}
+			 //initlal text box count
+		   console.log(x);
 			if (x < 100) {
 				FieldCount++; //text box added increment
 				//add input box
 				$(InputsWrapper).append(
 					//1.
-					'<div class="row"><p class="col-xs-6"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control skill_list" name="percent" id="field_' +
+					'<div class="form-group"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control skill_list" name="percent" id="percentageTax_'+FieldCount +
 				
-						'" value="50 ' +
+						'" value="10 ' +
 						
-						'"/></p><a href="#" class="btn btn-danger removeclass">×</a></div>' + 
+						'"/></div>' +
 							//2.
-						'<div class="row"><p class="col-xs-6"><input type="text" placeholder= "Broad Domain" class="form-control skill_list" name="domainText" id="field_' +
+						'<div class="form-group"><input type="text" placeholder= "Broad Domain" class="form-control skill_list" name="domainText" id="domainText_' + FieldCount+
 						
 						'" placeholder="Broad Domain ' +
 						
-						'"/></p><a href="#" class="btn btn-danger removeclass">×</a></div>' +
+						'"/></div>' +
 							 //3.
-						'<div class="row"><p class="col-xs-6"><input type="text" placeholder= "Problem Statement" class="form-control skill_list" name="problemText" id="problemStatement' +
+						'<div class="form-group"><input type="text" placeholder= "Problem Statement" class="form-control skill_list" name="problemText" id="problemStatement_'+FieldCount +
 						
 						'" placeholder=" Problem Statement ' +
 								
-						'"/></p><a href="#" class="btn btn-danger removeclass">×</a></div>' +
+						'"/></div>' +
 						//4.
-						'<div class="row"><p class="col-xs-6"><input type="text" placeholder= "Location or Beneficiary area" class="form-control skill_list" name="locationText" id="location' +
+						'<div class="form-group"><input type="text" placeholder= "Location or Beneficiary area" class="form-control skill_list" name="locationText" id="location_'+FieldCount +
 						
 							'" placeholder =" Location or Beneficiary area ' +
 							
-							'"/></p><a href="#" class="btn btn-danger removeclass">×</a></div>' +
+							'"/></div>' +
 							//5.
-							'<div class="row"><p class="col-xs-6"><input type="text" placeholder="Solution Suggestion" class="form-control skill_list" name="suggestionText" id="suggestion' +
+							'<div class="form-group"><input type="text" placeholder="Solution Suggestion" class="form-control skill_list" name="suggestionText" id="suggestion_'+FieldCount +
 						
 								'" placeholder ="Solution Suggestion ' +
 								
-								'"/></p><a href="#" class="btn btn-danger removeclass">×</a></div>' 
+								'"/></div>'
 						 
 
 		
 				);
-				x++; //text box increment
+				var newTax = "#percentageTax_"+FieldCount;
+				var taxVal=$(newTax).val();
+				taxVal=parseInt(taxVal);
+				x=x+taxVal;
+				// if (x>=100) {
+				// 	$( "#AddMoreFileBox" ).hide();
+				// }
 			}
-			return false;
-		});
-
-		$("body").on("click", ".removeclass", function (e) {
-			//user click on remove text
-			if (x > 1) {
-				$(this).parent("div").remove(); //remove text box
-				x--; //decrement textbox
+			else {
+				  $( "#AddMoreFileBox" ).hide();
 			}
 			return false;
 		});
 		$("#submit").click(function () {
 			$.ajax({
-				url: "/postskill",
+				url: "/tax-direction",
 				method: "POST",
-				data: $("#add_skills").serialize(),
+				data: $("#tax-form").serialize(),
 				success: function (data) {
 					alert(data);
 					$("#resultbox").html(data);
