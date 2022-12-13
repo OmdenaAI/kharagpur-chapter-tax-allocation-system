@@ -48,19 +48,21 @@ def tax_direction(name=None):
             for index, row in data_frame.iterrows():
                 print("$$$")
                 print(row["email"])
-                if str(row["email"]) == str(json_result["email"]):
-                    exists = True  # Creating the Second Dataframe using dictionary
+                if str(json_result["email"]) in row["email"]:
+                    exists = True  
+                    break
 
-                if not exists:
-                    final_data_frame = data_frame.append(new_data_frame)
-                    final_data_frame.to_csv(r'./static/data.csv', index=False)
-                    print("Added")
-                    # return "added"
-                else:
-                    # data_frame.to_csv(r'./static/data.csv', index=False)
-                    # return "updated"
-                    result = "Given email has already entered form details!"
-        return render_template("results.html", result=json_result)
+            if not exists:
+                final_data_frame = data_frame.append(new_data_frame)
+                final_data_frame.to_csv(r'./static/data.csv', index=False)
+                print("Added")
+                result = json_result
+                # return "added"
+            else:
+                # data_frame.to_csv(r'./static/data.csv', index=False)
+                # return "updated"
+                result = "Given email has already entered form details!"
+        return render_template("results.html", result=result)
 
 
 if __name__ == '__main__':

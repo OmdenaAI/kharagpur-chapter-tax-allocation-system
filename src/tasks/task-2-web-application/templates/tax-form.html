@@ -29,8 +29,7 @@
 		text-align: right;
 	}
 	#map {
-		width: 100%;
-		height: 300px;
+		height: 400px;
 		padding: 100px;
 		margin: 0;
 	}
@@ -125,12 +124,14 @@
 		/>
 	</div>
 
-	<div class="map-container">
-		<div id="map"></div>
+	<div class="form-group map-container">
+		<div id="map" class="form-control"></div>
 
 		<br />
 	</div>
+
 	<div class="form-group" id="InputsWrapper"></div>
+
 	<div class="form-group">
 		<button
 			type="button"
@@ -158,7 +159,7 @@
 	};
 
 	var map = L.map("map", options);
-	var nzoom = 12;
+	var nzoom = 9;
 
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
 		attribution: "OSM",
@@ -178,7 +179,7 @@
 					myMarker.getLatLng().lat +
 					"&lon=" +
 					myMarker.getLatLng().lng +
-					"&zoom=18&addressdetails=1";
+					"&zoom=9&addressdetails=1";
 				$.getJSON(jsonQuery).done(function (result_data) {
 					console.log(result_data);
 
@@ -246,18 +247,9 @@
 						new_addr = result_data.display_name;
 						var lat = myMarker.getLatLng().lat;
 						var lon = myMarker.getLatLng().lng;
-						var czoom = map.getZoom();
-						if (czoom < 18) {
-							nzoom = czoom + 2;
-						}
-						if (nzoom > 18) {
-							nzoom = 18;
-						}
-						if (czoom != 18) {
-							map.setView([lat, lon], nzoom);
-						} else {
-							map.setView([lat, lon]);
-						}
+
+						map.setView([lat, lon], 12);
+
 						document.getElementById("location").value = new_addr;
 						// $(id).val(new_addr);
 						$(id).append(
@@ -273,7 +265,7 @@
 				});
 			});
 		myMarker.closePopup();
-		map.setView([lat1, lng1], 18);
+		map.setView([lat1, lng1], 12);
 		myMarker.setLatLng([lat1, lng1]);
 		lat = lat1.toFixed(8);
 		lon = lng1.toFixed(8);
