@@ -28,16 +28,15 @@ def tax_direction(name=None):
         print("###")
         print(data_frame)
         # we can add code to check data before saving
-        input = {"consent": json_result["consent"],
-                 "email": json_result["email"],
+        input = {"consent": [json_result["consent"]],
+                 "email": [json_result["email"]],
                  "percent": [json_result["percent"]],
                  "domain": [json_result["domainText"]],
                  "problem": [json_result["problemText"]],
                  "location": [json_result["locationText"]],
                  "suggestion": [json_result["suggestionText"]],
-                 "lat": [json_result["lat"]],
-                 "long": [json_result["lon"]],
-                 "addr": json_result["addr"]
+                 "coordinates": [json_result["locationText"]],
+                 "addr": [json_result["addr"]]
                  }
         new_data_frame = pd.DataFrame.from_dict(input, orient='columns')
         if data_frame.empty:

@@ -1,5 +1,5 @@
-consent,email,percent,domain,problem,location,suggestion,lat,long,addr
-TRUE,pjalpa015@gmail.com,3,Pollution,Top polluted cities,Mumbai,Reduce oil imports,40.75637123,-73.98545321,"Kalina Kurla Road, Hallow Pul, L Ward, Zone 5, Mumbai, Mumbai Metropolitan Region, Mumbai Suburban, Maharashtra, 400070, India"
-['True'],['newemail'],"['50', '40']","['Pollution', 'af']","['Top polluted cities', 'poloejf']","['Country wide', 'jao']","['Reduce oil imports', 'jaoijs']",['28.629369253082'],['77.16583192359396'],['']
-TRUE,newemail1,"['50', '10 ']","['Pollution', 'gasdf']","['Top polluted cities', 'gasdg']","['Country wide', 'gg']","['Reduce oil imports', 'ssss']",['28.629369253082'],['77.16583192359396'],
-TRUE,newemai2,"['50', '10 ']","['Pollution', 'sa']","['Top polluted cities', 'das']","['Country wide', 'das']","['Reduce oil imports', 'dasd']",['28.629369253082'],['77.16583192359396'],
+consent,email,percent,domain,problem,location,suggestion,coordinates,addr
+True,test12,['50'],['Pollution'],['Top polluted cities'],['hyderabad'],['Reduce oil imports'],['hyderabad'],"Habeeb Nagar, Ward 76 Mallepally, Greater Hyderabad Municipal Corporation Central Zone, Hyderabad, Nampally mandal, Hyderabad, Telangana, 500057, India"
+True,test123,['50'],['Pollution'],['Top polluted cities'],['hyerabad'],['Reduce oil imports'],['hyerabad'],Lcoation
+['True'],['test123ad'],"['50', '10 ']","['Pollution', 'water']","['Top polluted cities', 'Water scarcity']","['17.38878595,78.46106473453146', '15.3004543,74.0855134']","['Reduce oil imports', 'Incerase plantation']","['17.38878595,78.46106473453146', '15.3004543,74.0855134']","['Lcoation', 'Lcoation']"
+['True'],['test123add'],"['50', '10 ']","['Pollution', 'water']","['Top polluted cities', 'Water scarcity']","['27.644606381943326,78.04687500000001', '18.941518554425834,72.82401323318483']","['Reduce oil imports', 'Incerase plantation']","['27.644606381943326,78.04687500000001', '18.941518554425834,72.82401323318483']","['Sasni, Hathras, Uttar Pradesh, 204101, India', 'P Mandal Marg, Fort, A Ward, Zone 1, Mumbai, Mumbai Metropolitan Region, Mumbai City, Maharashtra, 400020, India']"
