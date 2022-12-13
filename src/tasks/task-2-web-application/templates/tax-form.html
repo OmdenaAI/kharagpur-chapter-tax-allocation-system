@@ -116,18 +116,8 @@
 
 	<div class="map-container">
 		<div id="map"></div>
-		<b>Coordinates</b>
-		<input type="text" name="lat" id="lat" size="12" value="" />
-		<input type="text" name="lon" id="lon" size="12" value="" />
 
-		<b>Address Lookup</b>
-		<div id="search">
-			<input type="text" name="addr" value="" id="addr" size="58" />
-			<button type="button" >Search</button>
-			<div id="results"></div>
-		</div>
 		<br />
-
 	</div>
 	<div class="form-group" id="InputsWrapper"></div>
 	<div class="form-group">
@@ -156,19 +146,12 @@
 		zoom: 5,
 	};
 
-	document.getElementById("lat").value = startlat;
-	document.getElementById("lon").value = startlon;
-
 	var map = L.map("map", options);
 	var nzoom = 12;
 
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
 		attribution: "OSM",
 	}).addTo(map);
-
-
-
-	console.log(L);
 
 	var myMarker = L.marker([startlat, startlon], {
 		title: "Coordinates",
@@ -198,7 +181,8 @@
 					} else {
 						road = "Not defined!";
 					}
-					var popup_text = "</br><b>Address:</b> " + result_data.display_name;
+					var popup_text =
+						"</br><b>Address:</b> " + result_data.display_name;
 
 					if (result_data.address.city_district) {
 						popup_text =
@@ -232,19 +216,21 @@
 					}
 
 					if (road != "Not defined!") {
-						popup_text = popup_text + "</br><b>Road:</b> " + road +
-						", "
+						popup_text =
+							popup_text + "</br><b>Road:</b> " + road + ", ";
 					}
 					if (result_data.address.postcode) {
 						popup_text =
-								popup_text +
-								"</br><b>Postal:</b> " +
-								result_data.address.postcode;
+							popup_text +
+							"</br><b>Postal:</b> " +
+							result_data.address.postcode;
 					}
-					popup_text = popup_text+"</br><b>Lat-lng:</b> " +
+					popup_text =
+						popup_text +
+						"</br><b>Lat-lng:</b> " +
 						myMarker.getLatLng().lat +
 						", " +
-						myMarker.getLatLng().lng
+						myMarker.getLatLng().lng;
 					new_addr = result_data.display_name;
 					var lat = myMarker.getLatLng().lat;
 					var lon = myMarker.getLatLng().lng;
@@ -260,9 +246,13 @@
 					} else {
 						map.setView([lat, lon]);
 					}
-					document.getElementById("lat").value = lat;
-					document.getElementById("lon").value = lon;
-					document.getElementById("addr").value = new_addr;
+					document.getElementById("location").value = new_addr;
+					$("#location").append(
+						$("<option></option>")
+							.attr("value", lat + "," + lon)
+							.text(result_data.display_name)
+					);
+					$("#location").val(lat + "," + lon);
 					myMarker.bindPopup(popup_text).openPopup();
 				}
 			});
@@ -322,37 +312,32 @@
 			//  myMarker.setLatLng([lat1, lng1]);
 			//  lat = lat1.toFixed(8);
 			//  lon = lng1.toFixed(8);
-			document.getElementById("lat").value = lat;
-			document.getElementById("lon").value = lon;
-			document.getElementById("addr").value = result_data.display_name;
 			myMarker.bindPopup(popup_text).openPopup();
 			//  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
 			console.log(popup_text);
 		});
-
 	}
 
 	function myFunction(arr) {
-		var out = "<br />";
-		var i;
-
 		if (arr.length > 0) {
-			$('#locationInput').replaceWith('<select id="location" name="locationText" class="form-control"> </select>');
-			$.each(arr, function(index, value) {
-				console.log("INDEX ",index);
-				console.log("VALUE ", value);
-
-				$('#location')
-         			.append($("<option></option>")
-                    .attr("value", value.lat+","+value.lon)
-                    .text(value.display_name));
+			$("#locationInput").replaceWith(
+				'<select id="location" name="locationText" class="form-control"> </select>'
+			);
+			$.each(arr, function (index, value) {
+				$("#location").append(
+					$("<option></option>")
+						.attr("value", value.lat + "," + value.lon)
+						.text(value.display_name)
+				);
 			});
 			$("#location").change(function () {
-				var array = $('#location').val().split(',');
+				var array = $("#location").val().split(",");
 				chooseAddr(Number(array[0]), Number(array[1]));
 			});
-				} else {
-			document.getElementById("results").innerHTML =
+		} else {
+			document.getElementById("locationInput").innerHTML =
+				"Sorry, no results...";
+			document.getElementById("location").innerHTML =
 				"Sorry, no results...";
 		}
 	}
@@ -375,68 +360,58 @@
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
-	   $(document).ready(function () {
-		var MaxInputs = 8;
+	$(document).ready(function () {
 		var InputsWrapper = $("#InputsWrapper"); //Input boxes wrapper ID
 		var percentageTax = $("#percentageTax");
 
-		var x=0;
+		var x = 0;
 		var FieldCount = 0; //to keep track of text box added
 
 		$("#AddMoreFileBox").click(function (e) {
-			if(x==0) {
+			if (x == 0) {
 				x = parseInt(percentageTax.val());
 			}
-			 //initlal text box count
-		   console.log(x);
+			//initlal text box count
+			console.log(x);
 			if (x < 100) {
 				FieldCount++; //text box added increment
 				//add input box
 				$(InputsWrapper).append(
 					//1.
-					'<div class="form-group"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control skill_list" name="percent" id="percentageTax_'+FieldCount +
-				
+					'<div class="form-group"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control skill_list" name="percent" id="percentageTax_' +
+						FieldCount +
 						'" value="10 ' +
-						
 						'"/></div>' +
-							//2.
-						'<div class="form-group"><input type="text" placeholder= "Broad Domain" class="form-control skill_list" name="domainText" id="domainText_' + FieldCount+
-						
+						//2.
+						'<div class="form-group"><input type="text" placeholder= "Broad Domain" class="form-control skill_list" name="domainText" id="domainText_' +
+						FieldCount +
 						'" placeholder="Broad Domain ' +
-						
 						'"/></div>' +
-							 //3.
-						'<div class="form-group"><input type="text" placeholder= "Problem Statement" class="form-control skill_list" name="problemText" id="problemStatement_'+FieldCount +
-						
+						//3.
+						'<div class="form-group"><input type="text" placeholder= "Problem Statement" class="form-control skill_list" name="problemText" id="problemStatement_' +
+						FieldCount +
 						'" placeholder=" Problem Statement ' +
-								
 						'"/></div>' +
 						//4.
-						'<div class="form-group"><input type="text" placeholder= "Location or Beneficiary area" class="form-control skill_list" name="locationText" id="location_'+FieldCount +
-						
-							'" placeholder =" Location or Beneficiary area ' +
-							
-							'"/></div>' +
-							//5.
-							'<div class="form-group"><input type="text" placeholder="Solution Suggestion" class="form-control skill_list" name="suggestionText" id="suggestion_'+FieldCount +
-						
-								'" placeholder ="Solution Suggestion ' +
-								
-								'"/></div>'
-						 
-
-		
+						'<div class="form-group"><input type="text" placeholder= "Location or Beneficiary area" class="form-control skill_list" name="locationText" id="location_' +
+						FieldCount +
+						'" placeholder =" Location or Beneficiary area ' +
+						'"/></div>' +
+						//5.
+						'<div class="form-group"><input type="text" placeholder="Solution Suggestion" class="form-control skill_list" name="suggestionText" id="suggestion_' +
+						FieldCount +
+						'" placeholder ="Solution Suggestion ' +
+						'"/></div>'
 				);
-				var newTax = "#percentageTax_"+FieldCount;
-				var taxVal=$(newTax).val();
-				taxVal=parseInt(taxVal);
-				x=x+taxVal;
+				var newTax = "#percentageTax_" + FieldCount;
+				var taxVal = $(newTax).val();
+				taxVal = parseInt(taxVal);
+				x = x + taxVal;
 				// if (x>=100) {
 				// 	$( "#AddMoreFileBox" ).hide();
 				// }
-			}
-			else {
-				  $( "#AddMoreFileBox" ).hide();
+			} else {
+				$("#AddMoreFileBox").hide();
 			}
 			return false;
 		});
