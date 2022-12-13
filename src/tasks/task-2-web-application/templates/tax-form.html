@@ -97,9 +97,10 @@
 		<input
 			type="text"
 			class="form-control"
-			id="location"
+			id="locationInput"
 			name="locationText"
 			placeholder="Location or Beneficiary area"
+			onclick="addr_search();"
 		/>
 	</div>
 
@@ -122,7 +123,7 @@
 		<b>Address Lookup</b>
 		<div id="search">
 			<input type="text" name="addr" value="" id="addr" size="58" />
-			<button type="button" onclick="addr_search();">Search</button>
+			<button type="button" >Search</button>
 			<div id="results"></div>
 		</div>
 		<br />
@@ -347,19 +348,34 @@
 					"</div>";
 			}
 			document.getElementById("results").innerHTML = out;
-		} else {
+			$('#locationInput').replaceWith('<select id="location" name="locationText" class="form-control"> </select>');
+			$.each(arr, function(index, value) {
+				console.log("INDEX ",index);
+				console.log("VALUE ", value);
+
+				$('#location')
+         			.append($("<option></option>")
+                    .attr("value", value.lat+","+value.lon)
+                    .text(value.display_name));
+			});
+			$("#location").change(function () {
+				var array = $('#location').val().split(',');
+				chooseAddr(Number(array[0]), Number(array[1]));
+			});
+				} else {
 			document.getElementById("results").innerHTML =
 				"Sorry, no results...";
 		}
 	}
-	document.getElementById("addr").onchange = function () {
+
+	document.getElementById("locationInput").onchange = function () {
 		addr_search();
 	};
 	function addr_search() {
-		var inp = document.getElementById("addr");
+		var inp = document.getElementById("locationInput");
 		var xmlhttp = new XMLHttpRequest();
 		var url =
-			"https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" +
+			"https://nominatim.openstreetmap.org/search?format=json&limit=5&q=" +
 			inp.value;
 		xmlhttp.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
