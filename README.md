@@ -1,7 +1,3 @@
-# chapter-project-repository-template
-Use this Repository as a template for creating Local Chapter Repositories
-
-
 # Tax allocation-system creation allowing hyperlocal government investment into targeted sustainable developmental solutions
 # https://omdena.com/chapter-challenges/tax-allocation-manager-system/
 
