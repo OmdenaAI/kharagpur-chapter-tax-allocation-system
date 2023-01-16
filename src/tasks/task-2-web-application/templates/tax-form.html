@@ -29,8 +29,7 @@
 		text-align: right;
 	}
 	#map {
-		width: 100%;
-		height: 300px;
+		height: 400px;
 		padding: 100px;
 		margin: 0;
 	}
@@ -97,9 +96,10 @@
 		<input
 			type="text"
 			class="form-control"
-			id="location"
+			id="locationInput"
 			name="locationText"
 			placeholder="Location or Beneficiary area"
+			onclick="addr_search();"
 		/>
 	</div>
 
@@ -113,22 +113,25 @@
 		/>
 	</div>
 
-	<div class="map-container">
-		<div id="map"></div>
-		<b>Coordinates</b>
-		<input type="text" name="lat" id="lat" size="12" value="" />
-		<input type="text" name="lon" id="lon" size="12" value="" />
-
-		<b>Address Lookup</b>
-		<div id="search">
-			<input type="text" name="addr" value="" id="addr" size="58" />
-			<button type="button" onclick="addr_search();">Search</button>
-			<div id="results"></div>
-		</div>
-		<br />
-
+	<div class="form-group">
+		<input
+			type="hidden"
+			class="form-control"
+			id="addr"
+			name="addr"
+			value="Lcoation"
+			placeholder="Address"
+		/>
 	</div>
+
+	<div class="form-group map-container">
+		<div id="map" class="form-control"></div>
+
+		<br />
+	</div>
+
 	<div class="form-group" id="InputsWrapper"></div>
+
 	<div class="form-group">
 		<button
 			type="button"
@@ -155,121 +158,114 @@
 		zoom: 5,
 	};
 
-	document.getElementById("lat").value = startlat;
-	document.getElementById("lon").value = startlon;
-
 	var map = L.map("map", options);
-	var nzoom = 12;
+	var nzoom = 9;
 
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
 		attribution: "OSM",
 	}).addTo(map);
 
+	function chooseAddr(lat1, lng1, id, addrId) {
+		var myMarker = L.marker([lat1, lng1], {
+			title: "Coordinates",
+			alt: "Coordinates",
+			draggable: true,
+		})
+			.addTo(map)
+			.on("dragend", function () {
+				// OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
+				var jsonQuery =
+					"http://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
+					myMarker.getLatLng().lat +
+					"&lon=" +
+					myMarker.getLatLng().lng +
+					"&zoom=9&addressdetails=1";
+				$.getJSON(jsonQuery).done(function (result_data) {
+					console.log(result_data);
 
-
-	console.log(L);
-
-	var myMarker = L.marker([startlat, startlon], {
-		title: "Coordinates",
-		alt: "Coordinates",
-		draggable: true,
-	})
-		.addTo(map)
-		.on("dragend", function () {
-			// OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
-			var jsonQuery =
-				"http://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
-				myMarker.getLatLng().lat +
-				"&lon=" +
-				myMarker.getLatLng().lng +
-				"&zoom=18&addressdetails=1";
-			$.getJSON(jsonQuery).done(function (result_data) {
-				console.log(result_data);
-
-				var road;
-				if (result_data.error) {
-					myMarker.bindPopup("Try another place").openPopup();
-				} else {
-					if (result_data.address.road) {
-						road = result_data.address.road;
-					} else if (result_data.address.pedestrian) {
-						road = result_data.address.pedestrian;
+					var road;
+					if (result_data.error) {
+						myMarker.bindPopup("Try another place").openPopup();
 					} else {
-						road = "Not defined!";
-					}
-					var popup_text = "</br><b>Address:</b> " + result_data.display_name;
+						if (result_data.address.road) {
+							road = result_data.address.road;
+						} else if (result_data.address.pedestrian) {
+							road = result_data.address.pedestrian;
+						} else {
+							road = "Not defined!";
+						}
+						var popup_text =
+							"</br><b>Address:</b> " + result_data.display_name;
 
-					if (result_data.address.city_district) {
-						popup_text =
-							popup_text +
-							"</br><b>District:</b> " +
-							result_data.address.city_district;
-					}
-					if (result_data.address.city) {
-						popup_text =
-							popup_text +
-							"</br><b>City:</b> " +
-							result_data.address.city;
-					}
-					if (result_data.address.state_district) {
-						popup_text =
-							popup_text +
-							"</br><b>State District:</b> " +
-							result_data.address.state_district;
-					}
-					if (result_data.address.state) {
-						popup_text =
-							popup_text +
-							"</br><b>State:</b> " +
-							result_data.address.state;
-					}
-					if (result_data.address.country) {
-						popup_text =
-							popup_text +
-							"</br><b>Country:</b> " +
-							result_data.address.country;
-					}
+						if (result_data.address.city_district) {
+							popup_text =
+								popup_text +
+								"</br><b>District:</b> " +
+								result_data.address.city_district;
+						}
+						if (result_data.address.city) {
+							popup_text =
+								popup_text +
+								"</br><b>City:</b> " +
+								result_data.address.city;
+						}
+						if (result_data.address.state_district) {
+							popup_text =
+								popup_text +
+								"</br><b>State District:</b> " +
+								result_data.address.state_district;
+						}
+						if (result_data.address.state) {
+							popup_text =
+								popup_text +
+								"</br><b>State:</b> " +
+								result_data.address.state;
+						}
+						if (result_data.address.country) {
+							popup_text =
+								popup_text +
+								"</br><b>Country:</b> " +
+								result_data.address.country;
+						}
 
-					if (road != "Not defined!") {
-						popup_text = popup_text + "</br><b>Road:</b> " + road +
-						", "
-					}
-					if (result_data.address.postcode) {
-						popup_text =
+						if (road != "Not defined!") {
+							popup_text =
+								popup_text + "</br><b>Road:</b> " + road + ", ";
+						}
+						if (result_data.address.postcode) {
+							popup_text =
 								popup_text +
 								"</br><b>Postal:</b> " +
 								result_data.address.postcode;
-					}
-					popup_text = popup_text+"</br><b>Lat-lng:</b> " +
-						myMarker.getLatLng().lat +
-						", " +
-						myMarker.getLatLng().lng
-					new_addr = result_data.display_name;
-					var lat = myMarker.getLatLng().lat;
-					var lon = myMarker.getLatLng().lng;
-					var czoom = map.getZoom();
-					if (czoom < 18) {
-						nzoom = czoom + 2;
-					}
-					if (nzoom > 18) {
-						nzoom = 18;
-					}
-					if (czoom != 18) {
-						map.setView([lat, lon], nzoom);
-					} else {
-						map.setView([lat, lon]);
-					}
-					document.getElementById("lat").value = lat;
-					document.getElementById("lon").value = lon;
-					document.getElementById("addr").value = new_addr;
-					myMarker.bindPopup(popup_text).openPopup();
-				}
-			});
-		});
+						}
+						popup_text =
+							popup_text +
+							"</br><b>Lat-lng:</b> " +
+							myMarker.getLatLng().lat +
+							", " +
+							myMarker.getLatLng().lng;
+						new_addr = result_data.display_name;
+						var lat = myMarker.getLatLng().lat;
+						var lon = myMarker.getLatLng().lng;
 
-	function chooseAddr(lat1, lng1) {
+						map.setView([lat, lon], 12);
+
+						document.getElementById("location").value = new_addr;
+						// $(id).val(new_addr);
+						$(id).append(
+							$("<option></option>")
+								.attr("value", lat + "," + lon)
+								.text(result_data.display_name)
+						);
+						$(id).val(lat + "," + lon);
+						$(addrId).val(result_data.display_name);
+						console.log("ADDR VALUE = " + $(addrId).val());
+						myMarker.bindPopup(popup_text).openPopup();
+					}
+				});
+			});
 		myMarker.closePopup();
-		map.setView([lat1, lng1], 18);
+		map.setView([lat1, lng1], 12);
 		myMarker.setLatLng([lat1, lng1]);
 		lat = lat1.toFixed(8);
 		lon = lng1.toFixed(8);
@@ -321,117 +317,134 @@
 			//  myMarker.setLatLng([lat1, lng1]);
 			//  lat = lat1.toFixed(8);
 			//  lon = lng1.toFixed(8);
-			document.getElementById("lat").value = lat;
-			document.getElementById("lon").value = lon;
-			document.getElementById("addr").value = result_data.display_name;
+			$(addrId).val(result_data.display_name);
+			console.log("ADDR VALUE = " + $(addrId).val());
 			myMarker.bindPopup(popup_text).openPopup();
 			//  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
 			console.log(popup_text);
 		});
-
 	}
 
-	function myFunction(arr) {
-		var out = "<br />";
-		var i;
-
+	function myFunction(arr, textId, id, addrId) {
+		console.log("TEXT id ", textId);
+		console.log("SELECT id ", id);
 		if (arr.length > 0) {
-			for (i = 0; i < arr.length; i++) {
-				out +=
-					"<div class='address' title='Show Location and Coordinates' onclick='chooseAddr(" +
-					arr[i].lat +
-					", " +
-					arr[i].lon +
-					");return false;'>" +
-					arr[i].display_name +
-					"</div>";
-			}
-			document.getElementById("results").innerHTML = out;
+			var newValue = id.replace("#", "");
+			$(textId).replaceWith(
+				'<select id="' +
+					newValue +
+					'" name="locationText" class="form-control"> </select>'
+			);
+			$.each(arr, function (index, value) {
+				$(id).append(
+					$("<option></option>")
+						.attr("value", value.lat + "," + value.lon)
+						.text(value.display_name)
+				);
+			});
+			$(id).change(function () {
+				var array = $(id).val().split(",");
+				chooseAddr(Number(array[0]), Number(array[1]), id, addrId);
+				console.log("SELECT OPTION TEXT = " + $(id).text());
+				$(addrId).val(value.display_name);
+			});
 		} else {
-			document.getElementById("results").innerHTML =
+			document.getElementById("locationInput").innerHTML =
+				"Sorry, no results...";
+			document.getElementById("location").innerHTML =
 				"Sorry, no results...";
 		}
 	}
-	document.getElementById("addr").onchange = function () {
-		addr_search();
+
+	document.getElementById("locationInput").onchange = function () {
+		addr_search("#locationInput", "#location", "#addr");
 	};
-	function addr_search() {
-		var inp = document.getElementById("addr");
+	function addr_search(textId, id, addrId) {
+		var inp = $(textId).val();
+		console.log(inp);
 		var xmlhttp = new XMLHttpRequest();
 		var url =
-			"https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" +
-			inp.value;
+			"https://nominatim.openstreetmap.org/search?format=json&limit=5&q=" +
+			inp;
 		xmlhttp.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				var myArr = JSON.parse(this.responseText);
-				myFunction(myArr);
+				myFunction(myArr, textId, id, addrId);
 			}
 		};
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
-	   $(document).ready(function () {
-		var MaxInputs = 8;
+	$(document).ready(function () {
 		var InputsWrapper = $("#InputsWrapper"); //Input boxes wrapper ID
 		var percentageTax = $("#percentageTax");
 
-		var x=0;
+		var x = 0;
 		var FieldCount = 0; //to keep track of text box added
 
 		$("#AddMoreFileBox").click(function (e) {
-			if(x==0) {
+			if (x == 0) {
 				x = parseInt(percentageTax.val());
 			}
-			 //initlal text box count
-		   console.log(x);
+			//initlal text box count
+			console.log(x);
 			if (x < 100) {
 				FieldCount++; //text box added increment
 				//add input box
 				$(InputsWrapper).append(
 					//1.
-					'<div class="form-group"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control skill_list" name="percent" id="percentageTax_'+FieldCount +
-				
+					'<div class="form-group"><input type="text" placeholder= "Enter your Tax Percentage" class="form-control" name="percent" id="percentageTax_' +
+						FieldCount +
 						'" value="10 ' +
-						
 						'"/></div>' +
-							//2.
-						'<div class="form-group"><input type="text" placeholder= "Broad Domain" class="form-control skill_list" name="domainText" id="domainText_' + FieldCount+
-						
+						//2.
+						'<div class="form-group"><input type="text" placeholder= "Broad Domain" class="form-control" name="domainText" id="domainText_' +
+						FieldCount +
 						'" placeholder="Broad Domain ' +
-						
 						'"/></div>' +
-							 //3.
-						'<div class="form-group"><input type="text" placeholder= "Problem Statement" class="form-control skill_list" name="problemText" id="problemStatement_'+FieldCount +
-						
+						//3.
+						'<div class="form-group"><input type="text" placeholder= "Problem Statement" class="form-control" name="problemText" id="problemStatement_' +
+						FieldCount +
 						'" placeholder=" Problem Statement ' +
-								
 						'"/></div>' +
 						//4.
-						'<div class="form-group"><input type="text" placeholder= "Location or Beneficiary area" class="form-control skill_list" name="locationText" id="location_'+FieldCount +
-						
-							'" placeholder =" Location or Beneficiary area ' +
-							
-							'"/></div>' +
-							//5.
-							'<div class="form-group"><input type="text" placeholder="Solution Suggestion" class="form-control skill_list" name="suggestionText" id="suggestion_'+FieldCount +
-						
-								'" placeholder ="Solution Suggestion ' +
-								
-								'"/></div>'
-						 
-
-		
+						'<div class="form-group"><input type="text" placeholder= "Location or Beneficiary area" class="form-control" name="locationText" id="locationText_' +
+						FieldCount +
+						'" placeholder =" Location or Beneficiary area ' +
+						'"/></div>' +
+						//5.
+						'<div class="form-group"><input type="text" placeholder="Solution Suggestion" class="form-control" name="suggestionText" id="suggestion_' +
+						FieldCount +
+						'" placeholder ="Solution Suggestion ' +
+						'"/></div>' +
+						//5.
+						'<div class="form-group"><input type="hidden" placeholder="Address" class="form-control" name="addr" value="Lcoation" id="addr_' +
+						FieldCount +
+						'" placeholder ="Address ' +
+						'"/></div>'
 				);
-				var newTax = "#percentageTax_"+FieldCount;
-				var taxVal=$(newTax).val();
-				taxVal=parseInt(taxVal);
-				x=x+taxVal;
+				var newTax = "#percentageTax_" + FieldCount;
+				var taxVal = $(newTax).val();
+				taxVal = parseInt(taxVal);
+				x = x + taxVal;
+
+				// add location search
+				var newLocationText = "#locationText_" + FieldCount;
+				var newLocation = "#location_" + FieldCount;
+				$(newLocationText).on("change", function () {
+					console.log("change");
+					addr_search(
+						newLocationText,
+						newLocation,
+						"#addr_" + FieldCount
+					);
+				});
+
 				// if (x>=100) {
 				// 	$( "#AddMoreFileBox" ).hide();
 				// }
-			}
-			else {
-				  $( "#AddMoreFileBox" ).hide();
+			} else {
+				$("#AddMoreFileBox").hide();
 			}
 			return false;
 		});

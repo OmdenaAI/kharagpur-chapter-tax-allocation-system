@@ -9,8 +9,11 @@ app = Flask(__name__)
 # main method renders the Tax form
 @app.route('/')
 def main():
-    return render_template("tax-form.html")
+    return render_template("form.html")
 
+@app.route('/tax-form/')
+def tax_form():
+    return render_template("tax-form.html")
 
 # tax_direction method takes input from the form submit and shows the results page
 @app.route('/tax-direction/', methods=['POST', 'GET'])
@@ -28,16 +31,15 @@ def tax_direction(name=None):
         print("###")
         print(data_frame)
         # we can add code to check data before saving
-        input = {"consent": json_result["consent"],
-                 "email": json_result["email"],
+        input = {"consent": [json_result["consent"]],
+                 "email": [json_result["email"]],
                  "percent": [json_result["percent"]],
                  "domain": [json_result["domainText"]],
                  "problem": [json_result["problemText"]],
                  "location": [json_result["locationText"]],
                  "suggestion": [json_result["suggestionText"]],
-                 "lat": [json_result["lat"]],
-                 "long": [json_result["lon"]],
-                 "addr": json_result["addr"]
+                 "coordinates": [json_result["locationText"]],
+                 "addr": [json_result["addr"]]
                  }
         new_data_frame = pd.DataFrame.from_dict(input, orient='columns')
         if data_frame.empty:
@@ -49,19 +51,21 @@ def tax_direction(name=None):
             for index, row in data_frame.iterrows():
                 print("$$$")
                 print(row["email"])
-                if str(row["email"]) == str(json_result["email"]):
-                    exists = True  # Creating the Second Dataframe using dictionary
+                if str(json_result["email"]) in row["email"]:
+                    exists = True  
+                    break
 
-                if not exists:
-                    final_data_frame = data_frame.append(new_data_frame)
-                    final_data_frame.to_csv(r'./static/data.csv', index=False)
-                    print("Added")
-                    # return "added"
-                else:
-                    # data_frame.to_csv(r'./static/data.csv', index=False)
-                    # return "updated"
-                    result = "Given email has already entered form details!"
-        return render_template("results.html", result=json_result)
+            if not exists:
+                final_data_frame = data_frame.append(new_data_frame)
+                final_data_frame.to_csv(r'./static/data.csv', index=False)
+                print("Added")
+                result = json_result
+                # return "added"
+            else:
+                # data_frame.to_csv(r'./static/data.csv', index=False)
+                # return "updated"
+                result = "Given email has already entered form details!"
+        return render_template("results.html", result=result)
 
 
 if __name__ == '__main__':
