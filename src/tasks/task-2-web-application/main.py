@@ -9,8 +9,11 @@ app = Flask(__name__)
 # main method renders the Tax form
 @app.route('/')
 def main():
-    return render_template("tax-form.html")
+    return render_template("form.html")
 
+@app.route('/tax-form/')
+def tax_form():
+    return render_template("tax-form.html")
 
 # tax_direction method takes input from the form submit and shows the results page
 @app.route('/tax-direction/', methods=['POST', 'GET'])
