@@ -1,96 +1,186 @@
 <html>
-  <head>
-    <style>
-      h1{
-        text-align: center;
-        color: #4CAF50;
-      }
-      form {
-        width: 400px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 2px solid #4CAF50;
-        border-radius: 10px;
-      }
-      label {
-        display: inline-block;
-        width: 100px;
-        text-align: right;
-        padding-right: 10px;
-      }
-      input[type="text"], input[type="email"], select, input[type="number"], input[type="text"] {
-        width: 200px;
-        padding: 12px 20px;
-        margin: 8px 0;
-        box-sizing: border-box;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-      }
-      input[type="submit"] {
-        width: 100px;
-        background-color: #4CAF50;
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      input[type="submit"]:hover {
-        background-color: #45a049;
-      }
-    </style>
-  </head>
-  <body>
-  	<h1>TAX EVALUATION</h1>
-    <form action="{{ url_for("tax_direction")}}" method="post">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name"><br><br>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br><br>
-      <label for="gender">Gender:</label>
-      <select id="gender" name="gender">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select><br><br>
-      <label for="age-group">Age Group:</label>
-      <select id="age-group" name="age-group">
-        <option value="18-24">18-24</option>
-        <option value="25-44">25-44</option>
-        <option value="45-59">45-59</option>
-        <option value="60+">60+</option>
-      </select><br><br>
-      <label for="contribution">% Contribution:</label>
-      <input type="number" id="contribution" name="contribution" min="0" max="100"><br><br>
-      <label for="problem-statement">Problem Statement:</label>
-      <input type="text" id="problem-statement" name="problem-statement" maxlength="100">
-      <br><br>
-      <div id="additional-fields"></div>
-      <button type="button" onclick="addField()">Add More</button>
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
-    <script>
-      function addField() {
-          // function to add additional fields for problem statement and %contribution
-          var container = document.getElementById("additional-fields");
-          var input1 = document.createElement("input");
-          var input2 = document.createElement("input");
-          input1.type = "number";
-          input1.name = "contribution";
-        input1.placeholder = "% Contribution";
-        input1.min = 0;
-        input1.max = 100;
-        input2.type = "text";
-        input2.name = "problem-statement";
-        input2.placeholder = "Problem Statement";
-        input2.maxLength = 100;
-        container.appendChild(input1);
-        container.appendChild(input2);
-        container.appendChild(document.createElement("br"));
-        container.appendChild(document.createElement("br")); 
-      }
-      </script>
+	<head>
+		<style>
+			h1 {
+				text-align: center;
+				color: #4caf50;
+			}
+			form {
+				width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+				border: 2px solid #4caf50;
+				border-radius: 10px;
+			}
+			label {
+				display: inline-block;
+				width: 300px;
+				text-align: right;
+				padding-right: 10px;
+			}
+			input[type="text"],
+			input[type="email"],
+			select,
+			input[type="number"],
+			input[type="text"] {
+				width: 200px;
+				padding: 12px 20px;
+				margin: 8px 0;
+				box-sizing: border-box;
+				border: 2px solid #ccc;
+				border-radius: 4px;
+			}
+			input[type="submit"] {
+				width: 100px;
+				background-color: #4caf50;
+				color: white;
+				padding: 14px 20px;
+				margin: 8px 0;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			input[type="submit"]:hover {
+				background-color: #45a049;
+			}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<h1>TAX EVALUATION</h1>
+		<form action="{{ url_for('tax_direction') }}" method="post">
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name" /><br /><br />
+			<label for="email">Email:</label>
+			<input
+				type="email"
+				id="email"
+				name="email"
+				required
+				pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+			/><br /><br />
+			<label for="gender">Gender:</label>
+			<select id="gender" name="gender">
+				<option value="male">Male</option>
+				<option value="female">Female</option></select
+			><br /><br />
+			<label for="age-group">Age Group:</label>
+			<select id="age-group" name="age-group">
+				<option value="18-24">18-24</option>
+				<option value="25-44">25-44</option>
+				<option value="45-59">45-59</option>
+				<option value="60+">60+</option></select
+			><br /><br />
 
-    </body>
+			<label for="tax-amount"> Tax amount paid:</label>
+			<input
+				type="number"
+				id="tax-amount"
+				name="tax-amount"
+				min="0"
+			/><br /><br />
+			<label for="tax-year">Financial year for tax paid:</label>
+			<select id="tax-year" name="tax-year">
+				<option value="2019-2020">2019-2020</option>
+				<option value="2020-2021">2020-2021</option>
+				<option value="2021-2022">2021-2022</option>
+				<option value="2022-2023">2022-2023</option></select
+			><br /><br />
+
+			<!-- consent check box -->
+			<label for="consent"
+				>Do you wish to suggest how this Tax Amount should be
+				utilized?</label
+			>
+			<input
+				type="checkbox"
+				id="consent"
+				name="consent"
+				value="consent"
+				onclick="consent_check()"
+			/><br /><br />
+			<div id="container" style="display: none">
+				<label for="contribution">% Contribution:</label>
+				<input
+					type="number"
+					id="contribution"
+					name="contribution"
+					min="0"
+					max="100"
+				/><br /><br />
+				<label for="problem-statement">Problem Statement:</label>
+				<input
+					type="text"
+					id="problem-statement"
+					name="problem-statement"
+					maxlength="100"
+				/>
+				<br /><br />
+				<div id="additional-fields"></div>
+				<button type="button" id="addbutton" onclick="addField()">
+					Add More
+				</button>
+				<br /><br />
+			</div>
+
+			<input type="submit" value="Submit" />
+		</form>
+		<script>
+			function consent_check() {
+				// function to show additional fields for problem statement and %contribution
+				var checkBox = document.getElementById("consent");
+				var container = document.getElementById("container");
+				if (checkBox.checked == true) {
+					container.style.display = "block";
+				} else {
+					container.style.display = "none";
+				}
+			}
+
+			var InputWrapper = $("#additional-fields");
+			var percentageTax = document.getElementById("contribution").value;
+			var x = 0;
+			var FieldCount = 0;
+
+			function addField() {
+				console.log(percentageTax);
+				console.log("x = " + x);
+				// function to add additional fields for problem statement and %contribution
+				if (x == 0) {
+					x = parseInt(percentageTax);
+				} else {
+					var newTax = "#contribution" + FieldCount;
+					var taxVal = $(newTax).val();
+					taxVal = parseInt(taxVal);
+					if (!isNaN(taxVal)) {
+						x = x + taxVal;
+					}
+
+					console.log("x1 = " + x);
+
+					if (x < 100) {
+						FieldCount++;
+
+						$(InputWrapper).append(
+							'<label for="contribution' +
+								FieldCount +
+								'">% Contribution:</label> <input type="number" id="contribution' +
+								FieldCount +
+								'" name="contribution' +
+								FieldCount +
+								'" min="0" max="100" /><br /><br /> <label for="problem-statement' +
+								FieldCount +
+								'">Problem Statement:</label> <input type="text" id="problem-statement' +
+								FieldCount +
+								'" name="problem-statement' +
+								FieldCount +
+								'" maxlength="100" />'
+						);
+					} else {
+						$("#addbutton").hide();
+					}
+				}
+			}
+		</script>
+	</body>
 </html>
