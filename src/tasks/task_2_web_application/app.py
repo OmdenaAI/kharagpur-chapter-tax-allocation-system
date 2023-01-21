@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import render_template
 from flask import request
-from helper_module.database import DB
 from helper_module.helper import HelperFunction
 app = Flask(__name__)
 
@@ -15,12 +14,11 @@ def main():
 def tax_direction():
     if request.method == 'POST':
         print(request.form.to_dict())
-        dbobj = DB()
         data = request.form.to_dict()
         helper = HelperFunction()
-        status, msg = helper.add_data(dbobj, data)
+        status, msg = helper.add_data(data)
         if status:
-            return "Your name is " + request.form.get("name") + request.form.get("email")
+            return f"Hi {data.get('name')}! Thanks for your response!"
         else:
             return msg
 

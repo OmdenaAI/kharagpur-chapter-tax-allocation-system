@@ -17,10 +17,10 @@ class DB:
         )
         return myDB
 
-    def insert_data(self, data, db):
+    def insert_user_data(self, data, db):
         try:
             cursor = db.cursor()
-            sql = '''insert ignore into Users (name, email, gender, agegroup) values(%s, %s ,%s, %s);'''
+            sql = '''insert ignore into Users (userName, email, gender, ageGroup) values(%s, %s ,%s, %s);'''
             value = (data['name'], data['email'], data['gender'], data['age-group'])
             cursor.execute(sql, value)
             db.commit()
