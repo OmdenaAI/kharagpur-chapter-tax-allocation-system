@@ -138,47 +138,43 @@
 			}
 
 			var InputWrapper = $("#additional-fields");
-			var percentageTax = document.getElementById("contribution").value;
+			// var percentageTax = document.getElementById("contribution").value;
+			var percentageTax = $("#contribution");
 			var x = 0;
 			var FieldCount = 0;
 
 			function addField() {
-				console.log(percentageTax);
-				console.log("x = " + x);
 				// function to add additional fields for problem statement and %contribution
 				if (x == 0) {
-					x = parseInt(percentageTax);
+					x = parseInt(percentageTax.val());
+				}
+				var newTax = "#contribution" + FieldCount;
+				var taxVal = $(newTax).val();
+				taxVal = parseInt(taxVal);
+				if (!isNaN(taxVal)) {
+					x = x + taxVal;
+				}
+
+				if (x < 100) {
+					FieldCount++;
+
+					$(InputWrapper).append(
+						'<label for="contribution' +
+							FieldCount +
+							'">% Contribution:</label> <input type="number" id="contribution' +
+							FieldCount +
+							'" name="contribution' +
+							FieldCount +
+							'" min="0" max="100" /><br /><br /> <label for="problem-statement' +
+							FieldCount +
+							'">Problem Statement:</label> <input type="text" id="problem-statement' +
+							FieldCount +
+							'" name="problem-statement' +
+							FieldCount +
+							'" maxlength="100" />'
+					);
 				} else {
-					var newTax = "#contribution" + FieldCount;
-					var taxVal = $(newTax).val();
-					taxVal = parseInt(taxVal);
-					if (!isNaN(taxVal)) {
-						x = x + taxVal;
-					}
-
-					console.log("x1 = " + x);
-
-					if (x < 100) {
-						FieldCount++;
-
-						$(InputWrapper).append(
-							'<label for="contribution' +
-								FieldCount +
-								'">% Contribution:</label> <input type="number" id="contribution' +
-								FieldCount +
-								'" name="contribution' +
-								FieldCount +
-								'" min="0" max="100" /><br /><br /> <label for="problem-statement' +
-								FieldCount +
-								'">Problem Statement:</label> <input type="text" id="problem-statement' +
-								FieldCount +
-								'" name="problem-statement' +
-								FieldCount +
-								'" maxlength="100" />'
-						);
-					} else {
-						$("#addbutton").hide();
-					}
+					$("#addbutton").hide();
 				}
 			}
 		</script>
