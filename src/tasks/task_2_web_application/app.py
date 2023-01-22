@@ -25,6 +25,23 @@ def tax_direction():
     return render_template("ui.html")
 
 
+@app.route('/tax-from-data/admin',methods=["GET"])
+def display_tax_evaluation_data():
+    if request.method == 'GET':
+        helper = HelperFunction()
+        status, response = helper.get_data()
+        if status:
+            status1, html_response = helper.get_html_data(response)
+            if status1:
+                res_data = html_response.split("/")[-1]
+                print(res_data)
+                return render_template(res_data)
+            else:
+                return "Error in fetching data!"
+        else:
+            return response
+
+    return render_template("ui.html")
 
 if __name__ == '__main__':
     app.run()

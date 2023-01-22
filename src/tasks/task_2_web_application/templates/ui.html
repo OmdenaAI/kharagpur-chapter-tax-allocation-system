@@ -96,7 +96,7 @@
 				type="checkbox"
 				id="consent"
 				name="consent"
-				value="consent"
+				value="yes"
 				onclick="consent_check()"
 			/><br /><br />
 			<div id="container" style="display: none">
@@ -132,6 +132,7 @@
 				var container = document.getElementById("container");
 				if (checkBox.checked == true) {
 					container.style.display = "block";
+
 				} else {
 					container.style.display = "none";
 				}

@@ -6,9 +6,7 @@
   "tax_information": [{
     "financial_year": "",
     "tax_amount": "",
-    "tax_breakup_details":[{
-      "percentage_contribution": "",
-      "problem_statement": ""
-    }]
+    "tax_breakup_details":[
+    ]
   }]
 }
