@@ -93,16 +93,3 @@ class DBHelper:
             return False, "Error Occured!", {}
 
 
-
-if __name__ == '__main__':
-    db = DBHelper()
-    conn = db.connect()
-#     #conn.remove()
-    data = conn.find({})
-#
-#     # data = list(conn.aggregate([{"$unwind":"$tax_information"},{"$match":{"email":"neelam@gmail.com","tax_information.financial_year":"2020-2022"}}]))
-#     # print(data)
-#     # if len(data)>0:
-#     #     print("yes")
-    for i in data:
-        pprint.PrettyPrinter(indent=3).pprint(i)
