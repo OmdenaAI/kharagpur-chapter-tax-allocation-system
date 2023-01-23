@@ -15,8 +15,11 @@ def main():
 @app.route('/tax-from-data/',methods=["GET","POST"])
 def tax_direction():
     if request.method == 'POST':
-        print(request.form.to_dict())
+        temp_dict = request.form.to_dict(flat=False)
         data = request.form.to_dict()
+        data["contribution"] = temp_dict['contribution']
+        data["problem-statement"] = temp_dict['problem-statement']
+        print(data)
         helper = HelperFunction()
         status, msg = helper.add_data(data)
         if status:
