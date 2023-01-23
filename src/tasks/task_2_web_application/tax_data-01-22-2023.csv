@@ -1,0 +1,16 @@
+,percentage_contribution,problem_statement,username,email,financial_year,tax_amount
+0,20,pollution,ROHIT JOSHI,rohitjoshi9july@gmail.com,2019-2020,5555
+1,7,water scarcity,ROHIT JOSHI,rohitjoshi9july@gmail.com,2020-2021,55777
+2,20,major potholes in the area,Mangesh Potdar,mangesh@gmail.com,2020-2021,14150
+3,100,less connectivity,mana,mana@gmail.com,2021-2022,10000
+4,12,increasing noise,rohit,temp1@gmail.com,2022-2023,12000
+5,12,water scarcity,jalpa,jalpa@gmail.com,2019-2020,15000
+6,50,Pollution,jalpa,jalpa@gmail.com,2022-2023,15000
+7,,,shan,shan@gmail.com,2019-2020,12000
+8,50,road fixes,user1,user1@gmail.com,2021-2022,50000
+9,20,water scarcity,test,test@gmail.com,2020-2021,4000
+10,50,road fixes,Jalpa Patel,jalpapatel@gmail.com,2020-2021,400000
+11,"['20', '30']","['Problem 1', 'Problem 2']",['Patel J'],['patelj@gmail.com'],['2019-2020'],['4000']
+12,20,Problem 1,Patel ,patel@gmail.com,2020-2021,4000
+13,"['30', '40']","['Problem 1', 'Probelm 2']",Patel P,patelp@gmail.com,2020-2021,700040
+14,"['50', '20']","['First problem', 'Second Problem']",Test User,testuser@gmail.com,2021-2022,500000

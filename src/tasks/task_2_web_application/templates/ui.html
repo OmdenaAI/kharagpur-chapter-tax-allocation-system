@@ -132,7 +132,6 @@
 				var container = document.getElementById("container");
 				if (checkBox.checked == true) {
 					container.style.display = "block";
-
 				} else {
 					container.style.display = "none";
 				}
@@ -160,19 +159,15 @@
 					FieldCount++;
 
 					$(InputWrapper).append(
-						'<label for="contribution' +
+						'<label for="contribution_' +
 							FieldCount +
-							'">% Contribution:</label> <input type="number" id="contribution' +
+							'">% Contribution:</label> <input type="number" id="contribution_' +
 							FieldCount +
-							'" name="contribution' +
+							'" name="contribution" min="0" max="100" /><br /><br /> <label for="problem-statement_' +
 							FieldCount +
-							'" min="0" max="100" /><br /><br /> <label for="problem-statement' +
+							'">Problem Statement:</label> <input type="text" id="problem-statement_' +
 							FieldCount +
-							'">Problem Statement:</label> <input type="text" id="problem-statement' +
-							FieldCount +
-							'" name="problem-statement' +
-							FieldCount +
-							'" maxlength="100" />'
+							'" name="problem-statement" maxlength="100" />'
 					);
 				} else {
 					$("#addbutton").hide();
