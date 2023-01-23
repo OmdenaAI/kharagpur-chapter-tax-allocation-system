@@ -1,5 +1,5 @@
 
-from .database import DB
+
 from .database_nsql import DBHelper
 import pandas as pd
 import datetime, os
@@ -8,21 +8,6 @@ from dotenv import load_dotenv
 class HelperFunction:
     def __init__(self):
         load_dotenv()
-
-
-    def add_data_sql(self, data):
-        db = DB()
-        connection = db.connect()
-        try:
-            if not db.find_user(data['email']):
-                status, msg = db.insert_user_data(data, connection)
-
-            return status, msg
-        except Exception as e:
-            print("UserAdd error: ",e)
-            return False, "Error while adding user entry"
-        finally:
-            connection.close()
 
     def add_data(self, data):
         db = DBHelper()
@@ -37,22 +22,13 @@ class HelperFunction:
             return False, "Exception occurred while adding user data"
 
 
-    def get_data(self):
+    def save_tax_data(self):
         db = DBHelper()
         connection = db.connect()
         try:
-            status, response = self.save_tax_data(connection)
-            return status, response
-
-        except Exception as e:
-            print("SaveData error: ",e)
-            return False, "Exception occurred while getting user data"
-
-    def save_tax_data(self, db):
-        try:
             tax_data = []
 
-            for entry in db.find():
+            for entry in connection.find():
                 for tax_info in entry["tax_information"]:
                     for tax_entry in tax_info["tax_breakup_details"]:
                         tax_entry["username"] = entry["user_name"]
@@ -72,27 +48,33 @@ class HelperFunction:
 
         except Exception as e:
             print("Error: ", e)
+            return False, "Error in getting tax data!"
+
+    def save_user_data(self):
+        db = DBHelper()
+        connection = db.connect()
+        try:
+            data = connection.find()
+            dataframe = pd.DataFrame(data)
+            if "tax_information" in list(dataframe.columns):
+                dataframe.pop("tax_information")
+            filename = "user_data.csv"
+            dataframe.to_csv(filename)
+            return True, filename
+
+        except Exception as e:
+            print("Error: ", e)
             return False, "Error in getting user data!"
 
-    def save_user_data(self, db):
-        data = db.find()
-        dataframe = pd.DataFrame(data)
-
-        dataframe.pop("tax_information")
-        filename = "user_data.csv"
-        dataframe.to_csv(filename)
-        return True, filename
-
-
-
-    def get_html_data(self, csv_file):
-        html_filename = os.path.join(os.getcwd() + os.getenv("RESPONSE_HTML_PATH"))
+    def get_html_data(self, csv_file, path):
+        html_filename = os.path.join(os.getcwd() + path)
+        print(html_filename)
         csv_data = pd.read_csv(csv_file)
         html_text = csv_data.to_html()
 
         with open(html_filename,'w') as f:
             f.writelines(open(os.path.join(os.getcwd()+os.getenv("TAX_DATA_RESPONSE_FORMAT"))).readlines())
             f.write(html_text)
-        # csv_data.to_html(html_filename)
 
         return True, html_filename
+
