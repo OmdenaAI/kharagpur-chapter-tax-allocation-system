@@ -17,7 +17,7 @@ class DBHelper:
             os.getenv("MONGO_CLIENT").format(self.username, urllib.parse.quote(self.password)))
         db = client["TaxEvaluation"]
         collection = db["TaxEvaluationData"]
-        return collection
+        return client, collection
 
     def insert_data(self, db, data):
         try:
@@ -54,18 +54,15 @@ class DBHelper:
 
                     tax_entry_data = {"percentage_contribution":data["contribution"],
                             "problem_statement": data["problem-statement"]}
-                    print(tax_entry_data)
                     tax_data_node = {
                         "financial_year": data["tax-year"],
                         "tax_amount": data["tax-amount"],
                         "tax_breakup_details": [tax_entry_data]
                     }
-                    print(tax_data_node)
-                    print(input_data["tax_information"])
+
+
                     new_tax_data = list(input_data["tax_information"])
-                    print(new_tax_data, type(new_tax_data))
                     new_tax_data.append(tax_data_node)
-                    print(new_tax_data)
                     res = db.update_one({"email":data["email"]}, {"$set":{"tax_information":new_tax_data}})
                     if res.modified_count:
                         return True, "User updated successfully"
@@ -81,7 +78,6 @@ class DBHelper:
 
         try:
             temp = db.find_one({"email": user_mail})
-            # pprint.pprint(temp)
             if temp:
                 pprint.PrettyPrinter(indent=3).pprint(temp)
                 return True, "User Found", temp
