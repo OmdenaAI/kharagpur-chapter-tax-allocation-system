@@ -23,7 +23,7 @@ def tax_direction():
         helper = HelperFunction()
         status, msg = helper.add_data(data)
         if status:
-            return f"Thank you {data.get('name')} for sharing your Tax details and suggesting how this should be utilized. We would be sharing the batch results monthly for you to view the Result Dashboard. Meanwhile do share this form to your colleagues, friends, relatives and loved ones. <br><br> Your outreach is the first step towards development of this suggestive soft power to citizens ensuring effective directives reach the right people in time."
+            return f"<h3>Thank you {data.get('name')} for sharing your Tax details and suggesting how this should be utilized. We would be sharing the batch results monthly for you to view the Result Dashboard. Meanwhile do share this form to your colleagues, friends, relatives and loved ones. <br><br> Your outreach is the first step towards development of this suggestive soft power to citizens ensuring effective directives reach the right people in time. </h3>"
         else:
             return msg
 
