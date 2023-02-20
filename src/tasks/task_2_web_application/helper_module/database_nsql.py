@@ -1,7 +1,7 @@
 import pymongo,pprint
 import json, urllib, os
 from dotenv import load_dotenv
-import pandas as pd
+
 
 
 class DBHelper:
@@ -87,24 +87,3 @@ class DBHelper:
         except Exception as e:
             print("SearchUserError: ", e)
             return False, "Error Occured!", {}
-
-
-
-#
-# if __name__ == '__main__':
-#     db = DBHelper()
-#     conn = db.connect()
-#     i=1
-#     for k in conn.find():
-#         if i>10:
-#             conn.remove()
-#         i+=1
-#     data = conn.find({})
-# #
-# #     # data = list(conn.aggregate([{"$unwind":"$tax_information"},{"$match":{"email":"neelam@gmail.com","tax_information.financial_year":"2020-2022"}}]))
-# #     # print(data)
-# #     # if len(data)>0:
-# #     #     print("yes")
-#     for i in data:
-#         pprint.PrettyPrinter(indent=3).pprint(i)
-    #db.save_user_data(conn)

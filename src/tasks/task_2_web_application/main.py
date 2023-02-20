@@ -12,6 +12,7 @@ app = Flask(__name__)
 def main():
     return render_template("ui.html")
 
+
 @app.route('/tax-from-data/',methods=["GET","POST"])
 def tax_direction():
     if request.method == 'POST':
@@ -23,9 +24,9 @@ def tax_direction():
         helper = HelperFunction()
         status, msg = helper.add_data(data)
         if status:
-            return f"Thank you {data.get('name')} for sharing your Tax details and suggesting how this should be utilized. We would be sharing the batch results monthly for you to view the Result Dashboard. Meanwhile do share this form to your colleagues, friends, relatives and loved ones. <br><br> Your outreach is the first step towards development of this suggestive soft power to citizens ensuring effective directives reach the right people in time."
+            return render_template("user-response.html",userinput=f"Thank you {data.get('name')} for sharing your Tax details and suggesting how this should be utilized. We would be sharing the batch results monthly for you to view the Result Dashboard. Meanwhile do share this form to your colleagues, friends, relatives and loved ones. \n Your outreach is the first step towards development of this suggestive soft power to citizens ensuring effective directives reach the right people in time.")
         else:
-            return msg
+            return render_template("user-response.html", userinput=msg)
 
     return render_template("ui.html")
 
@@ -42,9 +43,9 @@ def display_tax_evaluation_data():
 
                 return render_template(res_data)
             else:
-                return "Error in fetching data!"
+                return render_template("user-response.html" , userinput="Error in fetching data!")
         else:
-            return response
+            return render_template("user-response.html" , userinput=response)
 
     return render_template("ui.html")
 

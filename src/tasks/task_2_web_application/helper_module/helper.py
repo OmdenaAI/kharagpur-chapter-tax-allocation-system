@@ -40,9 +40,9 @@ class HelperFunction:
                         tax_data.append(tax_entry)
 
             dataframe = pd.DataFrame.from_dict(tax_data)
-            curdate = datetime.datetime.today()
-            today = curdate.strftime("%m-%d-%Y")
-            csv_file = f"tax_data-{today}.csv"
+            # curdate = datetime.datetime.today()
+            # today = curdate.strftime("%m-%d-%Y")
+            csv_file = os.path.join(os.getcwd()+"/tmp/tax_data.csv")
             dataframe.to_csv(csv_file)
             print("Data saved!")
 
@@ -63,7 +63,7 @@ class HelperFunction:
             dataframe = pd.DataFrame(data)
             if "tax_information" in list(dataframe.columns):
                 dataframe.pop("tax_information")
-            filename = "user_data.csv"
+            filename = os.path.join(os.getcwd()+"/tmp/user_data.csv")
             dataframe.to_csv(filename)
             return True, filename
 
@@ -84,5 +84,6 @@ class HelperFunction:
             f.writelines(open(os.path.join(os.getcwd()+os.getenv("DATA_RESPONSE_FORMAT"))).readlines())
             f.write(html_text)
 
+        #os.removedirs(os.path.join(os.getcwd() + '/tmp'))
         return True, html_filename
 
