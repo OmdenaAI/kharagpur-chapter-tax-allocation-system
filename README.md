@@ -25,6 +25,11 @@
     ├── src                <- Source code folder for this project
         │
         ├── data           <- Datasets used and collected for this project
+        |       - raw
+        |       - processed_ner
+        |       - processed_summarize
+        |       - processed_translation
+        |       - processed_cluster
         │   
         ├── docs           <- Folder for Task documentations, Meeting Presentations and task Workflow Documents and Diagrams.
         │
