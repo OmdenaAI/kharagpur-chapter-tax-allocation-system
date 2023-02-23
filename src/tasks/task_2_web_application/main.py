@@ -41,11 +41,11 @@ def display_tax_evaluation_data():
             if status1:
                 res_data = html_response.split("/")[-1]
 
-                return render_template(res_data)
+                return render_template(html_response)
             else:
-                return render_template("user-response.html" , userinput="Error in fetching data!")
+                return render_template("user-response.html", userinput="Error in fetching data!")
         else:
-            return render_template("user-response.html" , userinput=response)
+            return render_template("user-response.html", userinput=response)
 
     return render_template("ui.html")
 
@@ -60,7 +60,7 @@ def display_user_data():
             if status1:
                 res_data = html_response.split("/")[-1]
 
-                return render_template(res_data)
+                return render_template(html_response)
             else:
                 return "Error in fetching data!"
         else:
@@ -70,4 +70,4 @@ def display_user_data():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

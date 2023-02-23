@@ -40,9 +40,7 @@ class HelperFunction:
                         tax_data.append(tax_entry)
 
             dataframe = pd.DataFrame.from_dict(tax_data)
-            # curdate = datetime.datetime.today()
-            # today = curdate.strftime("%m-%d-%Y")
-            csv_file = os.path.join(os.getcwd()+"/tmp/tax_data.csv")
+            csv_file = "/tmp/tax-eval-data.csv"#os.path.join(os.getcwd()+"/tax-eval-data.csv")
             dataframe.to_csv(csv_file)
             print("Data saved!")
 
@@ -63,7 +61,7 @@ class HelperFunction:
             dataframe = pd.DataFrame(data)
             if "tax_information" in list(dataframe.columns):
                 dataframe.pop("tax_information")
-            filename = os.path.join(os.getcwd()+"/tmp/user_data.csv")
+            filename = "/tmp/user_data.csv"#os.path.join(os.getcwd()+"/user_data.csv")
             dataframe.to_csv(filename)
             return True, filename
 
@@ -75,13 +73,14 @@ class HelperFunction:
             client.close()
 
     def get_html_data(self, csv_file, path):
-        html_filename = os.path.join(os.getcwd() + path)
+        html_filename = os.path.join(os.getcwd()+path)
+        # html_filename = os.path.join(os.getcwd() + path)
         print(html_filename)
         csv_data = pd.read_csv(csv_file)
         html_text = csv_data.to_html()
 
-        with open(html_filename,'w') as f:
-            f.writelines(open(os.path.join(os.getcwd()+os.getenv("DATA_RESPONSE_FORMAT"))).readlines())
+        with open(html_filename, 'w') as f:
+            f.writelines(open(os.path.join(os.getcwd()+os.getenv("TAX_DATA_RESPONSE_FORMAT"))).readlines())
             f.write(html_text)
 
         #os.removedirs(os.path.join(os.getcwd() + '/tmp'))
