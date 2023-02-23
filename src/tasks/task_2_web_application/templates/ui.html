@@ -264,7 +264,12 @@
 					<option value="60+">60+</option>
 					<option value="na">Prefer not to say</option>
 				</select>
-
+                <label for="city">City:</label>
+                <input type="text"
+                       id="city"
+                       name="city"
+                       required
+					    pattern="([^\s][A-z\s]+)" />
 				<label for="tax-amount"> Tax amount paid:</label>
 				<input
 					type="number"
