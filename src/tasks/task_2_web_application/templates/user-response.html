@@ -9,20 +9,20 @@
         text-align: center; /* center the heading */
           color: #4caf50;
       }
-      p {
+      .message {
         font-size: 25px;
         margin: 10px;
           padding: 20px;
           border: 2px solid #4caf50;
           border-radius: 10px;
         letter-spacing: 2px; /* add spacing between letters */
-        text-transform: capitalize; /* convert text to uppercase */
+        text-transform: none;
       }
     </style>
   </head>
   <body>
     <h1>Thank you</h1>
-    <p id="message">{{userinput}}</p>
+    <div class="message">{{userinput | safe}}</div>
 
   </body>
 </html>

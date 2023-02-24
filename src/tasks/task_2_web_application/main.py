@@ -24,7 +24,14 @@ def tax_direction():
         helper = HelperFunction()
         status, msg = helper.add_data(data)
         if status:
-            return render_template("user-response.html",userinput=f"Thank you {data.get('name')} for sharing your Tax details and suggesting how this should be utilized. We would be sharing the batch results monthly for you to view the Result Dashboard. Meanwhile do share this form to your colleagues, friends, relatives and loved ones. \n Your outreach is the first step towards development of this suggestive soft power to citizens ensuring effective directives reach the right people in time.")
+            msg= f'''Thanks {data["name"]} for sharing your Tax Details and suggesting how this should be utilized. <br>We would be sharing batch-wise results monthly for you to review our Result Dashboard.<br>
+                    Meanwhile, please do share this form <a href="https://omdena-tax-evaluation.el.r.appspot.com/">TAX-Evaluation Form</a> with your Colleagues, Friends, Relatives and Loved Ones. 
+                    <br> Your Outreach is the first step towards development of this Suggestive Soft Power to citizens ensuring Effective Directives reach the right people in Time.
+                    To help decision makers incorporate this novel #TaxDirection within their Decision Support Systems, please share this on: <br><br> 
+                    <a href="https://www.linkedin.com/"> Linkedin</a>
+                    <a href="https://www.facebook.com/"> Facebook</a>
+                    '''
+            return render_template("user-response.html",userinput=msg)
         else:
             return render_template("user-response.html", userinput=msg)
 
@@ -39,9 +46,8 @@ def display_tax_evaluation_data():
         if status:
             status1, html_response = helper.get_html_data(response, os.getenv("TAX_DATA_HTML_PATH"))
             if status1:
-                res_data = html_response.split("/")[-1]
 
-                return render_template(html_response)
+                return render_template(os.getenv("TAX_DATA_RESPONSE_FORMAT"), data=html_response)
             else:
                 return render_template("user-response.html", userinput="Error in fetching data!")
         else:
@@ -58,9 +64,8 @@ def display_user_data():
         if status:
             status1, html_response = helper.get_html_data(response, os.getenv("USER_DATA_HTML_PATH"))
             if status1:
-                res_data = html_response.split("/")[-1]
 
-                return render_template(html_response)
+                return render_template(os.getenv("TAX_DATA_RESPONSE_FORMAT"), data=html_response)
             else:
                 return "Error in fetching data!"
         else:

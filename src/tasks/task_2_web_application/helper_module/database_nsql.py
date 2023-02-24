@@ -2,8 +2,6 @@ import pymongo,pprint
 import json, urllib, os
 from dotenv import load_dotenv
 
-
-
 class DBHelper:
     def __init__(self):
         load_dotenv()
@@ -23,12 +21,13 @@ class DBHelper:
         try:
             status, msg, input_data = self.find_user(db, data['email'])
             if not status:
-                #print(os.path.join(os.getcwd()+ "structure.json"))
+
                 input_data = json.load(open(os.path.join(os.getcwd()+ os.getenv("JSON_STRUCTURE_PATH"))))
                 input_data["user_name"] = data["name"]
                 input_data["email"] = data["email"]
                 input_data["age_group"] = data["age-group"]
                 input_data["gender"] = data["gender"]
+                input_data["city"] = data["city"]
                 input_data["tax_information"][0]["financial_year"] =data["tax-year"]
                 input_data["tax_information"][0]["tax_amount"] =data["tax-amount"]
 
@@ -60,7 +59,6 @@ class DBHelper:
                         "tax_breakup_details": [tax_entry_data]
                     }
 
-
                     new_tax_data = list(input_data["tax_information"])
                     new_tax_data.append(tax_data_node)
                     res = db.update_one({"email":data["email"]}, {"$set":{"tax_information":new_tax_data}})
@@ -87,3 +85,4 @@ class DBHelper:
         except Exception as e:
             print("SearchUserError: ", e)
             return False, "Error Occured!", {}
+

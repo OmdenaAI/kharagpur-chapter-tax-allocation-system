@@ -76,6 +76,7 @@
 			.consent {
 				padding: 0px;
 				width: fit-content;
+
 			}
 
 			.add-more {
@@ -172,8 +173,7 @@
 		<form action="{{ url_for('tax_direction') }}" method="post">
 			<!-- consent check box -->
 			<label class="consent" for="consent"
-				>Do you wish to suggest how this Tax Amount should be
-				utilized?</label
+				>Do you wish to suggest how your Tax should be utilized to solve your problems?</label
 			>
 			<input
 				type="checkbox"
@@ -212,7 +212,7 @@
 					placeholder="Example - Reduce pollution in Delhi"
 					id="problem-statement"
 					name="problem-statement"
-					maxlength="100"
+					maxlength="250"
 					rows="4"
 					cols="80"
 					required
