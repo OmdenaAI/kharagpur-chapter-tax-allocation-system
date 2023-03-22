@@ -25,11 +25,11 @@
     ├── src                <- Source code folder for this project
         │
         ├── data           <- Datasets used and collected for this project
-        |       - raw
-        |       - processed_ner
-        |       - processed_summarize
-        |       - processed_translation
-        |       - processed_cluster
+        |       - raw [MyGov, Twitter, etc.]
+        |       - processed_translation [Python Library suggested: Googletrans]
+                    - processed_ner [skipping as of now]
+        |           - processed_summarize [Python Library suggested: HuggingFace Transformer Model]
+        |               - processed_cluster [input is the summarised data] [Python Library suggested: Bertopic]
         │   
         ├── docs           <- Folder for Task documentations, Meeting Presentations and task Workflow Documents and Diagrams.
         │
