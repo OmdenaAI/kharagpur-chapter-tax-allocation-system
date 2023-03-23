@@ -1,0 +1,7 @@
+openai
+scikit-learn
+matplotlib
+numpy
+pandas
+transformers
+bertopic
