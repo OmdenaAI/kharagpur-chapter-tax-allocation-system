@@ -1,0 +1,379 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Georgia, "Times New Roman", Times, serif;
+			}
+
+			h1 {
+				text-align: center;
+				color: #4caf50;
+			}
+
+			form {
+				width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+
+				/* border: 2px solid #4caf50; */
+				/* border-radius: 10px; */
+			}
+
+			.personal-details-container {
+				width: 100%;
+				margin: 0 auto;
+				padding: 20px;
+				border: 2px solid #4caf50;
+				border-radius: 10px;
+				margin-top: 10px;
+			}
+
+			.tax-details-container {
+				width: 100%;
+				margin: 0 auto;
+				margin-top: 10px;
+				padding: 20px;
+				border: 2px solid #4caf50;
+				border-radius: 10px;
+			}
+
+			label {
+				display: inline-block;
+				width: 100%;
+				padding-right: 10px;
+				font-size: 18px;
+				margin-top: 15px;
+			}
+
+			input[type="text"],
+			input[type="email"],
+			select,
+			input[type="number"],
+			input[type="text"] {
+				width: 100%;
+				padding: 12px 20px;
+				margin: 8px 0;
+				box-sizing: border-box;
+				border: 2px solid #ccc;
+				border-radius: 4px;
+			}
+
+			input[type="submit"] {
+				width: 100px;
+				background-color: #4caf50;
+				color: white;
+				padding: 14px 20px;
+				margin: 8px 0;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			input[type="submit"]:hover {
+				background-color: #45a049;
+			}
+
+			.consent {
+				padding: 0px;
+				width: fit-content;
+
+			}
+
+			.add-more {
+				background-color: #4caf50;
+				color: white;
+				padding: 10px 5px;
+				margin: 8px 0;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			/* The slider itself */
+			.slider {
+				-webkit-appearance: none;
+				width: 88%;
+				height: 5px;
+				background: #d3d3d3;
+				outline: none;
+				opacity: 0.7;
+				-webkit-transition: 0.2s;
+				transition: opacity 0.2s;
+			}
+
+			.slider input[type="range"] {
+				-webkit-appearance: none !important;
+				width: 420px;
+				height: 2px;
+				background: black;
+				border: none;
+				outline: none;
+			}
+
+			/* Mouse-over effects */
+			.slider:hover {
+				opacity: 1;
+				/* Fully shown on mouse-over */
+			}
+
+			/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+			.slider::-webkit-slider-thumb {
+				-webkit-appearance: none !important;
+				width: 10px;
+				height: 10px;
+				background: black;
+				border: 2px solid black;
+				border-radius: 50%;
+				cursor: pointer;
+			}
+
+			.slider::-moz-range-thumb {
+				width: 10px;
+				height: 10px;
+				background: black;
+				border: 2px solid black;
+				border-radius: 50%;
+				cursor: pointer;
+			}
+
+			.slider-bubble {
+				font-size: 20px;
+				font-weight: 400;
+				color: white;
+				margin-left: 10px;
+				position: relative;
+				background: #45a049;
+				width: 50px;
+				height: 30px;
+				text-align: center;
+				border-radius: 5px;
+				display: inline-block;
+				right: 175%;
+				left: 0;
+			}
+
+			.slider-bubble:after {
+				transform: rotate(90deg);
+				content: "";
+				position: absolute;
+				width: 0;
+				height: 0;
+				border-top: 10px solid #45a049;
+				border-left: 5px solid transparent;
+				border-right: 5px solid transparent;
+				right: 98%;
+				bottom: 35%;
+			}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<h1>TAX EVALUATION</h1>
+		<form action="{{ url_for('tax_direction') }}" method="post">
+			<!-- consent check box -->
+			<label class="consent" for="consent"
+				>Do you wish to suggest how your Tax should be utilized to solve your problems?</label
+			>
+			<input
+				type="checkbox"
+				id="consent"
+				name="consent"
+				value="yes"
+				onclick="consent_check()"
+			/>
+			<div
+				id="container"
+				class="tax-details-container"
+				style="display: none"
+			>
+				<h4>
+					Following form allows you to enter how much tax amount you
+					want to re-direct to problem of your choice.
+				</h4>
+				<label for="contribution">Tax Percentage Contribution:</label>
+
+				<input
+					type="range"
+					min="0"
+					max="100"
+					class="slider"
+					name="contribution"
+					id="contribution"
+					required
+				/>
+				<p
+					id="slider-value"
+					class="slider-bubble"
+					for="contribution"
+				></p>
+				<label for="problem-statement">Problem Statement:</label>
+				<textarea
+					placeholder="Example - Reduce pollution in Delhi"
+					id="problem-statement"
+					name="problem-statement"
+					maxlength="600"
+					rows="4"
+					cols="80"
+					required
+				></textarea>
+
+				<div id="additional-fields"></div>
+				<button
+					type="button"
+					id="addbutton"
+					class="add-more"
+					onclick="addField()"
+				>
+					Add More
+				</button>
+			</div>
+			<div
+				class="personal-details-container"
+				id="personal-container"
+				style="display: none"
+			>
+				<h2>Personal Information</h2>
+				<h4>
+					Providing basic personal details help us to understand the
+					demographics of Indian citizens supporting tax re-direction
+					feature
+				</h4>
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" />
+				<label for="email">Email:</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+					pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+				/>
+				<label for="gender">Gender:</label>
+				<select id="gender" name="gender">
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+					<option value="na">Prefer not to say</option>
+				</select>
+				<label for="age-group">Age Group:</label>
+				<select id="age-group" name="age-group">
+					<option value="18-24">18-24</option>
+					<option value="25-44">25-44</option>
+					<option value="45-59">45-59</option>
+					<option value="60+">60+</option>
+					<option value="na">Prefer not to say</option>
+				</select>
+                <label for="city">City:</label>
+                <input type="text"
+                       id="city"
+                       name="city"
+                       required
+					    pattern="([^\s][A-z\s]+)" />
+				<label for="tax-amount"> Tax amount paid:</label>
+				<input
+					type="number"
+					id="tax-amount"
+					name="tax-amount"
+					min="0"
+				/>
+				<label for="tax-year">Financial year for tax paid:</label>
+				<select id="tax-year" name="tax-year">
+					<option value="2019-2020">2019-2020</option>
+					<option value="2020-2021">2020-2021</option>
+					<option value="2021-2022">2021-2022</option>
+					<option value="2022-2023">2022-2023</option>
+				</select>
+			</div>
+
+			<input type="submit" id="submit" value="Submit" />
+		</form>
+		<script>
+			var $submit = $("#submit").hide(),
+				$cbs = $('input[name="consent"]').click(function () {
+					$submit.toggle($cbs.is(":checked"));
+				});
+			var slider = document.getElementById("contribution");
+			var output = document.getElementById("slider-value");
+			output.innerHTML = slider.value; // Display the default slider value
+
+			// Update the current slider value (each time you drag the slider handle)
+			slider.oninput = function () {
+				output.innerHTML = this.value;
+			};
+			function consent_check() {
+				// function to show additional fields for problem statement and %contribution
+				var checkBox = document.getElementById("consent");
+				var container = document.getElementById("container");
+				var personalDetails =
+					document.getElementById("personal-container");
+				if (checkBox.checked == true) {
+					container.style.display = "block";
+					personalDetails.style.display = "block";
+				} else {
+					container.style.display = "none";
+					personalDetails.style.display = "none";
+				}
+				$;
+			}
+
+			var InputWrapper = $("#additional-fields");
+			// var percentageTax = document.getElementById("contribution").value;
+			var percentageTax = $("#contribution");
+			var x = 0;
+			var FieldCount = 0;
+
+			function addField() {
+				// function to add additional fields for problem statement and %contribution
+				if (x == 0) {
+					x = parseInt(percentageTax.val());
+					$("#contribution").prop("readonly", true);
+				}
+				var newTax = "#contribution_" + FieldCount;
+				var taxVal = $(newTax).val();
+				var remainingTax = 100;
+				taxVal = parseInt(taxVal);
+				if (!isNaN(taxVal)) {
+					x = x + taxVal;
+					remainingTax = 100 - x;
+					$(newTax).prop("readonly", true);
+				}
+				if (isNaN(taxVal)) {
+					remainingTax = 100 - x;
+				}
+
+				if (x < 100) {
+					FieldCount++;
+
+					$(InputWrapper).append(
+						'<label for="contribution">Tax Percentage Contribution:</label><input type="range" min="0" max="' +
+							remainingTax +
+							'" class="slider" name="contribution" id="contribution_' +
+							FieldCount +
+							'" required/> <p id="slider-value_' +
+							FieldCount +
+							'" class="slider-bubble" for="contribution_' +
+							FieldCount + '"></p><label for="problem-statement_' +
+							FieldCount +
+							'">Problem Statement:</label> <textarea id="problem-statement_' +
+							FieldCount +
+							'" name="problem-statement" placeholder="Example - Reduce pollution in Delhi" maxlength="500" rows="4" cols="80" required></textarea>'
+					);
+				} else {
+					$("#addbutton").hide();
+				}
+
+				var slidervar = document.getElementById(
+					"contribution_" + FieldCount
+				);
+				var outputvar = document.getElementById(
+					"slider-value_" + FieldCount
+				);
+				outputvar.innerHTML = slidervar.value;
+				slidervar.oninput = function () {
+					outputvar.innerHTML = this.value;
+				};
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .error-message {
+        font-family: Arial, sans-serif;
+        color: #EE5F57; /* set text color to light green */
+        text-align: center; /* center the message */
+        font-size: 40px;
+        font-weight: bold;
+        position: absolute; /* position the message in absolute */
+        top: 50%; /* center the message vertically */
+        left: 50%; /* center the message horizontally */
+        transform: translate(-50%, -50%); /* adjust the position of the message */
+        animation: float 5s ease-in-out infinite; /* animate the message */
+      }
+      @keyframes float {
+        from {transform: translate(-50%, -50%) translateY(-10px);}
+        to {transform: translate(-50%, -50%) translateY(10px);}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-message">Sorry for the inconvenience! We are trying to get things back. Please check later!</div>
+  </body>
+</html>
