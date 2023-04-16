@@ -27,7 +27,7 @@ class DBHelper:
                 input_data["email"] = data["email"]
                 input_data["age_group"] = data["age-group"]
                 input_data["gender"] = data["gender"]
-                input_data["city"] = data["city"]
+                input_data["user_city"] = data["user_city"]
                 input_data["tax_information"][0]["financial_year"] =data["tax-year"]
                 input_data["tax_information"][0]["tax_amount"] =data["tax-amount"]
 

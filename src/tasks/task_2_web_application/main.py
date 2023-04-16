@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
-from flask import request
+from flask import request, jsonify
+import requests
 from helper_module.helper import HelperFunction
 import os
 
@@ -10,7 +11,7 @@ app = Flask(__name__)
 # main method renders the Tax form
 @app.route('/')
 def main():
-    return render_template("ui.html")
+    return render_template("testui.html")
 
 
 @app.route('/tax-from-data/',methods=["GET","POST"])
@@ -35,7 +36,7 @@ def tax_direction():
         else:
             return render_template("user-response.html", userinput=msg)
 
-    return render_template("ui.html")
+    return render_template("testui.html")
 
 
 @app.route('/admin/tax-data',methods=["GET"])
@@ -53,7 +54,7 @@ def display_tax_evaluation_data():
         else:
             return render_template("user-response.html", userinput=response)
 
-    return render_template("ui.html")
+    return render_template("testui.html")
 
 
 @app.route('/admin/user-data',methods=["GET"])
@@ -71,7 +72,24 @@ def display_user_data():
         else:
             return response
 
-    return render_template("ui.html")
+    return render_template("testui.html")
+
+@app.route('/api/domains')
+def domains():
+    helper_obj = HelperFunction()
+    domainlist = helper_obj.get_domains()
+    domains = [{"name":i} for i in domainlist]
+    domains.append({"name":"other"})
+    return jsonify(domains)
+
+
+@app.route('/api/cities')
+def cities():
+    helper_obj = HelperFunction()
+    citylist = helper_obj.get_cities()
+    cities = [{"name":i} for i in citylist]
+    cities.append({"name":"other"})
+    return jsonify(cities)
 
 
 if __name__ == '__main__':

@@ -79,10 +79,65 @@ class HelperFunction:
         csv_data = pd.read_csv(csv_file)
         html_text = csv_data.to_html()
 
-        # with open(html_filename, 'w') as f:
-        #     f.writelines(open(os.path.join(os.getcwd()+os.getenv("TAX_DATA_RESPONSE_FORMAT"))).readlines())
-        #     f.write(html_text)
-
-        #os.removedirs(os.path.join(os.getcwd() + '/tmp'))
         return True, html_text
 
+    def get_cities(self):
+        try:
+            data = pd.read_json(os.getcwd() + "/helper_module/cities.json")
+            india = data[data["iso2"]=="IN"]
+            indiancities = list(india["cities"])
+            citynames = [i['name'].lower() for i in indiancities[0]]
+            return citynames
+        except Exception as e:
+            print("Exception in fetching indian cities: ",e)
+            return ["others"]
+
+    def get_domains(self):
+        domainlist = ["Atmosphere",
+         "Biodiversity and Ecosystems",
+         "Capacity Development",
+         "Chemicals and Waste",
+         "Climate Action and Synergies",
+         "Defense and Security",
+         "Desertification, Land Degradation and Drought",
+         "Disaster Risk Reduction",
+         "Education",
+         "Employment, Decent Work for All and Social Protection",
+         "Energy",
+         "Finance",
+         "Financial Inclusion",
+         "Food Security and Nutrition",
+         "Forests and Grasslands",
+         "Gender equality and women’s empowerment",
+         "Green Economy",
+         "Health and Population",
+         "Hills and Mountains",
+         "Human Rights",
+         "Indicators and Bio-Markers",
+         "Industry or Innovation",
+         "Information for Integrated Decision-Making and Participation",
+         "Institutional Frameworks and International Co-operation for Sustainable Development",
+         "Longevity and Reversing Aging",
+         "Multi-Stakeholder Partnerships and Voluntary Commitments",
+         "National Strategies and SDG Integration",
+         "Oceans and Seas",
+         "Orbit Shift and Space Travel",
+         "Poverty Eradication",
+         "Preserving Consciousness and Preventing Cognitive Warfare",
+         "Rural Development",
+         "Sanitation",
+         "Science",
+         "Small Island Developing States",
+         "Sustainable Agriculture",
+         "Sustainable Cities and Human Settlements",
+         "Sustainable Consumption and Production",
+         "Sustainable Tourism",
+         "Sustainable Transport",
+         "Technical Cooperation",
+         "Technology",
+         "Trade & Comerce",
+         "Violence and War",
+         "Water",
+         "Wildlife Protection"]
+        domainlist.sort()
+        return domainlist
