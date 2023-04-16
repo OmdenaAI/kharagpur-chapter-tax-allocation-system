@@ -21,6 +21,8 @@ def tax_direction():
         data = request.form.to_dict()
         data["contribution"] = temp_dict['contribution']
         data["problem-statement"] = temp_dict['problem-statement']
+        data["domain"] = temp_dict['domain']
+        data["city"] = temp_dict['city']
         print(data)
         helper = HelperFunction()
         status, msg = helper.add_data(data)
