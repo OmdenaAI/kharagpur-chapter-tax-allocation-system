@@ -11,7 +11,7 @@ app = Flask(__name__)
 # main method renders the Tax form
 @app.route('/')
 def main():
-    return render_template("testui.html")
+    return render_template("ui.html")
 
 
 @app.route('/tax-from-data/',methods=["GET","POST"])
@@ -21,9 +21,9 @@ def tax_direction():
         data = request.form.to_dict()
         data["contribution"] = temp_dict['contribution']
         data["problem-statement"] = temp_dict['problem-statement']
-        data["domain"] = temp_dict['domain']
-        data["city"] = temp_dict['city']
-        print(data)
+        data["domains"] = temp_dict['domain']
+        data["cities"] = temp_dict['city']
+
         helper = HelperFunction()
         status, msg = helper.add_data(data)
         if status:
@@ -38,7 +38,7 @@ def tax_direction():
         else:
             return render_template("user-response.html", userinput=msg)
 
-    return render_template("testui.html")
+    return render_template("ui.html")
 
 
 @app.route('/admin/tax-data',methods=["GET"])
@@ -56,7 +56,8 @@ def display_tax_evaluation_data():
         else:
             return render_template("user-response.html", userinput=response)
 
-    return render_template("testui.html")
+    return render_template("ui.html")
+
 
 
 @app.route('/admin/user-data',methods=["GET"])
@@ -74,7 +75,7 @@ def display_user_data():
         else:
             return response
 
-    return render_template("testui.html")
+    return render_template("ui.html")
 
 @app.route('/api/domains')
 def domains():

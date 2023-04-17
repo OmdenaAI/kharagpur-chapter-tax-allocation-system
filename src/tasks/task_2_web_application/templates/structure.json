@@ -3,7 +3,7 @@
   "email": "",
   "age_group": "",
   "gender": "",
-  "city": "",
+  "user_city": "",
   "tax_information": [{
     "financial_year": "",
     "tax_amount": "",

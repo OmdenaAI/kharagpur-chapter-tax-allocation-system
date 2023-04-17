@@ -92,6 +92,7 @@ class HelperFunction:
             print("Exception in fetching indian cities: ",e)
             return ["others"]
 
+
     def get_domains(self):
         domainlist = ["Atmosphere",
          "Biodiversity and Ecosystems",

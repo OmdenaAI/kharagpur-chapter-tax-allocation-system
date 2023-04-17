@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 class DBHelper:
     def __init__(self):
         load_dotenv()
-
-        print( os.getenv("DB_USERNAME"))
         self.username = os.getenv("DB_USERNAME")
         self.password = os.getenv("DB_PASSWORD")
 
@@ -31,11 +29,16 @@ class DBHelper:
                 input_data["tax_information"][0]["financial_year"] =data["tax-year"]
                 input_data["tax_information"][0]["tax_amount"] =data["tax-amount"]
 
+                for i in range(len(data['contribution'])):
+                    tax_entry_data = {
+                        "percentage_contribution":data["contribution"][i],
+                        "problem_statement":data["problem-statement"][i],
+                        "city":data["cities"][i],
+                        "domain":data["domain"][i]
+                    }
+                    input_data["tax_information"][0]["tax_breakup_details"].append(tax_entry_data)
 
-                tax_entry_data = {"percentage_contribution":data["contribution"],
-                 "problem_statement": data["problem-statement"]}
-
-                input_data["tax_information"][0]["tax_breakup_details"].append(tax_entry_data)
+                # input_data["tax_information"][0]["tax_breakup_details"].append(tax_entry_data)
 
                 temp = db.insert_one(input_data)
                 print("UserAdded: ", {data["name"]})
@@ -51,12 +54,22 @@ class DBHelper:
                     return False, "UserData for given financial year is already present!"
                 else:
 
-                    tax_entry_data = {"percentage_contribution":data["contribution"],
-                            "problem_statement": data["problem-statement"]}
+                    # tax_entry_data = {"percentage_contribution":data["contribution"],
+                    #         "problem_statement": data["problem-statement"]}
+                    tax_data_list = []
+                    for i in range(len(data['contribution'])):
+                        tax_entry_data = {
+                            "percentage_contribution": data["contribution"][i],
+                            "problem_statement": data["problem-statement"][i],
+                            "city": data["cities"][i],
+                            "domain": data["domain"][i]
+                        }
+                        tax_data_list.append(tax_entry_data)
+
                     tax_data_node = {
                         "financial_year": data["tax-year"],
                         "tax_amount": data["tax-amount"],
-                        "tax_breakup_details": [tax_entry_data]
+                        "tax_breakup_details": tax_data_list
                     }
 
                     new_tax_data = list(input_data["tax_information"])
@@ -84,5 +97,8 @@ class DBHelper:
 
         except Exception as e:
             print("SearchUserError: ", e)
-            return False, "Error Occured!", {}
+            return False, "Error Occurred!", {}
 
+
+if __name__ == '__main__':
+    obj = DBHelper()

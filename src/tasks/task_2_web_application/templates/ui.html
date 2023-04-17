@@ -11,7 +11,7 @@
 			}
 
 			form {
-				width: 600px;
+				width: 700px;
 				margin: 0 auto;
 				padding: 20px;
 
@@ -29,8 +29,8 @@
 			}
 
 			.tax-details-container {
-				width: 100%;
-				margin: 0 auto;
+                width: 100%;
+				margin: 20px auto;
 				margin-top: 10px;
 				padding: 20px;
 				border: 2px solid #4caf50;
@@ -40,10 +40,22 @@
 			label {
 				display: inline-block;
 				width: 100%;
-				padding-right: 10px;
 				font-size: 18px;
 				margin-top: 15px;
 			}
+
+
+
+
+            .domain-city{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 80%;
+
+
+            }
+
 
 			input[type="text"],
 			input[type="email"],
@@ -212,11 +224,20 @@
 					placeholder="Example - Reduce pollution in Delhi"
 					id="problem-statement"
 					name="problem-statement"
-					maxlength="600"
+					maxlength="800"
 					rows="4"
 					cols="80"
 					required
 				></textarea>
+                <div class="domain-city">
+                    <label for="domain">Domain:</label>
+                    <select id="domain" name="domain" required></select>
+
+                    <label  style="margin-left: 120px;" for="city">City:</label>
+                    <select id="city" name="city" required></select>
+
+                </div>
+
 
 				<div id="additional-fields"></div>
 				<button
@@ -266,9 +287,8 @@
 				</select>
                 <label for="city">City:</label>
                 <input type="text"
-                       id="city"
-                       name="city"
-                       required
+                       id="user_city"
+                       name="user_city"
 					    pattern="([^\s][A-z\s]+)" />
 				<label for="tax-amount"> Tax amount paid:</label>
 				<input
@@ -276,12 +296,10 @@
 					id="tax-amount"
 					name="tax-amount"
 					min="0"
+                    required
 				/>
 				<label for="tax-year">Financial year for tax paid:</label>
-				<select id="tax-year" name="tax-year">
-					<option value="2019-2020">2019-2020</option>
-					<option value="2020-2021">2020-2021</option>
-					<option value="2021-2022">2021-2022</option>
+				<select id="tax-year" name="tax-year" required>
 					<option value="2022-2023">2022-2023</option>
 				</select>
 			</div>
@@ -289,12 +307,14 @@
 			<input type="submit" id="submit" value="Submit" />
 		</form>
 		<script>
+
 			var $submit = $("#submit").hide(),
 				$cbs = $('input[name="consent"]').click(function () {
 					$submit.toggle($cbs.is(":checked"));
 				});
 			var slider = document.getElementById("contribution");
 			var output = document.getElementById("slider-value");
+
 			output.innerHTML = slider.value; // Display the default slider value
 
 			// Update the current slider value (each time you drag the slider handle)
@@ -357,8 +377,14 @@
 							FieldCount +
 							'">Problem Statement:</label> <textarea id="problem-statement_' +
 							FieldCount +
-							'" name="problem-statement" placeholder="Example - Reduce pollution in Delhi" maxlength="500" rows="4" cols="80" required></textarea>'
-					);
+							'" name="problem-statement" placeholder="Example - Reduce pollution in Delhi" maxlength="500" rows="4" cols="80" required></textarea>'+
+							'<div class="domain-city"> <label for="domain_' +
+                        FieldCount+ '">Domain:</label> <select id="domain_' +
+                        FieldCount +'" name="domain"> required</select><label  style="margin-left: 120px;" for="city_' +
+                        FieldCount +'">City:</label> <select id="city_'+
+                        FieldCount+ '" name="city"> required</select></div>'
+
+                    );
 				} else {
 					$("#addbutton").hide();
 				}
@@ -369,11 +395,82 @@
 				var outputvar = document.getElementById(
 					"slider-value_" + FieldCount
 				);
+
 				outputvar.innerHTML = slidervar.value;
 				slidervar.oninput = function () {
 					outputvar.innerHTML = this.value;
 				};
 			}
+
+		// fetch cities and domain data
+        let cityData = null;
+        let domainData = null;
+
+        function fetchCityData() {
+          return fetch("http://127.0.0.1:5000/api/cities").then(response => response.json());
+        }
+
+        function fetchDomainData() {
+          return fetch("http://127.0.0.1:5000/api/domains").then(response => response.json());
+        }
+
+
+        function populateCityDropdown() {
+          if (cityData) {
+            populateDropdowns(cityData, "[id^='city']");
+          } else {
+            fetchCityData().then(data => {
+              cityData = data;
+              populateDropdowns(cityData, "[id^='city']");
+            });
+          }
+        }
+
+        function populateDomainDropdown() {
+          if (domainData) {
+            populateDropdowns(domainData, "[id^='domain']");
+          } else {
+            fetchDomainData().then(data => {
+              domainData = data;
+              populateDropdowns(domainData, "[id^='domain']");
+            });
+          }
+        }
+
+        function populateDropdowns(data, selector) {
+          const dropdowns = document.querySelectorAll(selector);
+          dropdowns.forEach(dropdown => {
+            data.forEach(item => {
+              const option = document.createElement("option");
+              option.text = item.name;
+              dropdown.appendChild(option);
+            });
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          populateCityDropdown();
+          populateDomainDropdown();
+
+          const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+              const addedNodes = mutation.addedNodes;
+              addedNodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE && node.querySelector("[id^='city']")) {
+                  populateCityDropdown();
+
+                }
+                if (node.nodeType === Node.ELEMENT_NODE && node.querySelector("[id^='domain']")){
+                    populateDomainDropdown();
+                }
+              });
+            });
+          });
+
+          const config = { childList: true, subtree: true };
+          observer.observe(document.body, config);
+        });
+
 		</script>
 	</body>
 </html>
