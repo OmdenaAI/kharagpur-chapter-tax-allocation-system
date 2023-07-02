@@ -1,6 +1,6 @@
 # Tax allocation-system creation allowing hyperlocal government investment into targeted sustainable developmental solutions
 # https://omdena.com/chapter-challenges/tax-allocation-manager-system/
-
+# https://omdenadocs.notion.site/Kharagpur-India-Chapter-Tax-allocation-system-creation-allowing-hyperlocal-government-investment--667c22f2bdc343c48c5b3e1f8b1bd2fd
 
 ## Contribution Guidelines
 - Have a Look at the [project structure](#project-structure) and [folder overview](#folder-overview) below to understand where to store/upload your contribution
