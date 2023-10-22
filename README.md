@@ -1,4 +1,8 @@
 # Tax allocation-system creation allowing hyperlocal government investment into targeted sustainable developmental solutions
+
+# https://www.change.org/p/democracy-evolution-ensuring-humanity-s-eternal-existence-through-taxdirection/dashboard?source_location=user_profile_started
+# https://chng.it/WD4hqYxJ9d
+
 # https://omdena.com/chapter-challenges/tax-allocation-manager-system/
 # https://omdenadocs.notion.site/Kharagpur-India-Chapter-Tax-allocation-system-creation-allowing-hyperlocal-government-investment--667c22f2bdc343c48c5b3e1f8b1bd2fd
 
